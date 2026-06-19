@@ -158,9 +158,11 @@ button.selezionato {
     <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start;">
         
         <div id="area-estrazione" style="width: 300px; background: #1a1a3a; padding: 15px; border-radius: 10px; border: 1px solid #00f2ff;">
-            <h2 id="nome-squadra-estratta" style="font-size: 1.2rem; margin-top: 0;">Nessuna squadra</h2>
-            <div id="lista-giocatori-squadra" class="griglia-giocatori" style="margin-bottom: 15px;"></div>
-            <button onclick="faiRoll()" style="width: 100%; background: #00f2ff; color: #0b0b1e; padding: 10px; font-weight: bold; cursor: pointer; border: none; border-radius: 5px;">ESTRAI SQUADRA</button>
+            <h2 id="nome-squadra-estratta" style="font-size: 1.2rem; margin-top: 0; margin-bottom: 15px;">Nessuna squadra</h2>
+            
+            <button onclick="faiRoll()" style="width: 100%; background: #00f2ff; color: #0b0b1e; padding: 10px; font-weight: bold; cursor: pointer; border: none; border-radius: 5px; margin-bottom: 15px;">ESTRAI SQUADRA</button>
+            
+            <div id="lista-giocatori-squadra" class="griglia-giocatori" style="margin-bottom: 0;"></div>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -179,7 +181,6 @@ button.selezionato {
                 
                 <div style="position: absolute; top: 80px; left: 150px; width: 100px; height: 40px; border: 2px solid white; border-radius: 50% / 100% 100% 0 0; border-top: none; transform: rotate(180deg);"></div>
                 <div style="position: absolute; bottom: 80px; left: 150px; width: 100px; height: 40px; border: 2px solid white; border-radius: 50% / 100% 100% 0 0; border-top: none;"></div>
-
                 <div style="position: absolute; top: -10px; left: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
                 <div style="position: absolute; top: -10px; right: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
                 <div style="position: absolute; bottom: -10px; left: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
@@ -189,9 +190,9 @@ button.selezionato {
                 </div>
             </div>
 
-<div style="width: 400px; background: #333; padding: 10px; border-radius: 5px; border: 2px solid #555;">
-                <p style="margin:0 0 5px 0; font-size: 0.8rem; font-weight: bold;">PANCHINA (7)</p>
-                <div id="slot-panchina" style="display: flex; gap: 10px; justify-content: center;"></div>
+<div style="width: 100px; background: #333; padding: 10px; border-radius: 5px; border: 2px solid #555; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                <p style="margin: 0 0 5px 0; font-size: 0.7rem; font-weight: bold; text-align: center; color: #aaa;">PANCHINA (7)</p>
+                <div id="slot-panchina" style="display: flex; flex-direction: column; gap: 8px; justify-content: flex-start; align-items: center; width: 100%;"></div>
             </div>
         </div>
     </div>
@@ -287,15 +288,35 @@ const posizioniModuli = {
     ]
 };
 
-// 4. FUNZIONI LOGICHE
+// Tabella dei colori delle maglie e del testo associati alle bandiere
+const coloriNazionali = {
+    "it": { sfondo: "#004dff", testo: "#ffffff" }, // Azzurro, testo Bianco
+    "fr": { sfondo: "#002395", testo: "#ffffff" }, // Blu, testo Bianco
+    "gb": { sfondo: "#ffffff", testo: "#000000" }, // Bianco, testo Nero
+    "es": { sfondo: "#c60b1e", testo: "#ffffff" }, // Rosso, testo Bianco
+    "pt": { sfondo: "#b60a1c", testo: "#ffffff" }, // Rosso, testo Bianco
+    "ar": { sfondo: "#74acdf", testo: "#ffffff" }, // Celeste, testo Bianco
+    "br": { sfondo: "#ffdf00", testo: "#0b0b1e" }, // Giallo, testo Nero/Blu
+    "nl": { sfondo: "#ff4f00", testo: "#ffffff" }, // Arancione, testo Bianco
+    "de": { sfondo: "#ffffff", testo: "#000000" }, // Bianco, testo Nero
+    "us": { sfondo: "#ffffff", testo: "#000000" }  // Bianco, testo Nero
+};
+
 function selezionaBandiera(codice) {
     const tutteLeBandiere = document.querySelectorAll('.bandiera');
     tutteLeBandiere.forEach(b => { b.style.borderColor = "#555"; b.style.boxShadow = "none"; });
+    
     event.currentTarget.style.borderColor = "#00f2ff";
     event.currentTarget.style.boxShadow = "0 0 15px #00f2ff";
+    
+    // Salva il codice bandiera
     impostazioniGioco.bandiera = codice;
+    
+    // Salva i colori scelti (se non trova la sigla, usa i colori di default scuri)
+    const infoColori = coloriNazionali[codice] || { sfondo: "#444", testo: "#fff" };
+    impostazioniGioco.coloreMaglia = infoColori.sfondo;
+    impostazioniGioco.coloreTestoMaglia = infoColori.testo;
 }
-
 function selezionaModulo(modulo) {
     const tuttiIModuli = document.querySelectorAll('.griglia-moduli button');
     tuttiIModuli.forEach(btn => btn.classList.remove('selezionato'));
@@ -726,6 +747,10 @@ function assegnaPanchina(slot) {
     slot.style.justifyContent = "center";
     slot.style.fontSize = "9px";
     
+    // --- COLORAZIONE BANDIERA IN PANCHINA ---
+    slot.style.background = impostazioniGioco.coloreMaglia || "#444";
+    slot.style.color = impostazioniGioco.coloreTestoMaglia || "#ffffff";
+    
     // --- AGGIUNTA FONDAMENTALE ---
     // Memorizziamo il nome nella lista dei giocatori schierati
     nomiSchierati.push(giocatoreSelezionato.nome);
@@ -734,7 +759,7 @@ function assegnaPanchina(slot) {
     // Blocchiamo lo slot della panchina
     slot.onclick = null; 
     slot.style.cursor = "default";
-    slot.style.border = "2px solid #555";
+    slot.style.border = "2px solid white"; // Bordino bianco coordinato col campo!
     slot.style.boxShadow = "none";
     
     // Resetta la selezione globale
@@ -795,10 +820,15 @@ function assegnaGiocatore(slot) {
             return;
         }
 
-        // 2. ASSEGNAZIONE
+        // 2. ASSEGNAZIONE GRAFICA E COLORI DELLA BANDIERA
         cerchio.style.width = "50px";
         cerchio.style.height = "50px";
         cerchio.style.boxSizing = "border-box";
+        
+        // Applica dinamicamente il colore della maglia nazionale scelta (con salvagente se non ancora cliccata)
+        cerchio.style.background = impostazioniGioco.coloreMaglia || "#444";
+        cerchio.style.color = impostazioniGioco.coloreTestoMaglia || "#ffffff";
+        cerchio.style.border = "2px solid white"; // Un bel bordino bianco stile maglia da gioco
         
         cerchio.innerText = giocatoreSelezionato.nome;
         cerchio.style.fontSize = giocatoreSelezionato.nome.length > 7 ? "9px" : "11px";
