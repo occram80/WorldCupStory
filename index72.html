@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>WORLD CUP STORY - Nuova Base</title>
+    <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: #0b0b1e;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #schermata-iniziale {
+        background: #1a1a3a;
+        padding: 30px;
+        border: 4px solid #00f2ff;
+        border-radius: 15px;
+        text-align: center;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    }
+
+    h1 {
+        color: #00f2ff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        margin-bottom: 30px;
+        font-size: 24px;
+    }
+
+    p { color: #ffffff; font-weight: bold; margin: 15px 0 10px 0; }
+
+    input {
+        padding: 12px;
+        width: 80%;
+        font-size: 16px;
+        background: #0d0d26;
+        border: 2px solid #00f2ff;
+        color: white;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    /* Griglia Bandiere */
+    .griglia-bandiere {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .bandiera {
+        width: 100%;
+        height: 35px;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 2px solid #555;
+        transition: 0.3s;
+    }
+
+    .bandiera:hover {
+        border-color: #00f2ff;
+        box-shadow: 0 0 10px #00f2ff;
+        transform: scale(1.1);
+    }
+
+    /* Tastoni Moduli - Stile Moderno e Reattivo */
+    .griglia-moduli {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 colonne per fila */
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    button {
+        padding: 12px 5px;
+        font-size: 14px;
+        cursor: pointer;
+        background: #1a1a3a; /* Sfondo scuro di base */
+        color: #00f2ff;       /* Testo ciano */
+        border: 2px solid #00f2ff;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+    }
+
+    button:hover {
+        background: #00f2ff;
+        color: #0b0b1e;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 242, 255, 0.4);
+    }
+
+    button:active {
+        transform: translateY(0); /* Effetto "clic" */
+    }
+    /* Classe che applichiamo via JavaScript quando il tasto è scelto */
+button.selezionato {
+    background: #00f2ff;
+    color: #0b0b1e;
+    box-shadow: 0 0 15px #00f2ff;
+    transform: translateY(-3px);
+}
+</style>
+</head>
+<body>
+    <div id="schermata-iniziale">
+        <h1>WORLD CUP STORY</h1>
+
+        <div class="input-group">
+            <p>NOME DEL TUO TEAM:</p>
+            <input type="text" id="nome-team" placeholder="ITALIA" maxlength="12" onkeydown="if(event.key === 'Enter') avviaDraft()">
+        </div>
+
+        <div class="input-group">
+            <p>SCEGLI LA BANDIERA:</p>
+            <div class="griglia-bandiere">
+    <img src="https://flagcdn.com/w80/it.png" class="bandiera" onclick="selezionaBandiera('it')">
+    <img src="https://flagcdn.com/w80/fr.png" class="bandiera" onclick="selezionaBandiera('fr')">
+    <img src="https://flagcdn.com/w80/gb-eng.png" class="bandiera" onclick="selezionaBandiera('gb')">
+    <img src="https://flagcdn.com/w80/es.png" class="bandiera" onclick="selezionaBandiera('es')">
+    <img src="https://flagcdn.com/w80/pt.png" class="bandiera" onclick="selezionaBandiera('pt')">
+    <img src="https://flagcdn.com/w80/ar.png" class="bandiera" onclick="selezionaBandiera('ar')">
+    <img src="https://flagcdn.com/w80/br.png" class="bandiera" onclick="selezionaBandiera('br')">
+    <img src="https://flagcdn.com/w80/nl.png" class="bandiera" onclick="selezionaBandiera('nl')">
+    <img src="https://flagcdn.com/w80/de.png" class="bandiera" onclick="selezionaBandiera('de')">
+    <img src="https://flagcdn.com/w80/us.png" class="bandiera" onclick="selezionaBandiera('us')">
+</div>
+        </div>
+
+        <div class="input-group">
+    <p>SELEZIONA MODULO TATTICO:</p>
+    <div class="griglia-moduli">
+        <button onclick="selezionaModulo('4-4-2')">4-4-2</button>
+        <button onclick="selezionaModulo('4-3-3')">4-3-3</button>
+        <button onclick="selezionaModulo('4-2-4')">4-2-4</button>
+        <button onclick="selezionaModulo('4-3-2-1')">4-3-2-1</button>
+        <button onclick="selezionaModulo('4-2-3-1')">4-2-3-1</button>
+        <button onclick="selezionaModulo('5-3-2')">5-3-2</button>
+        <button onclick="selezionaModulo('3-5-2')">3-5-2</button>
+        <button onclick="selezionaModulo('3-4-3')">3-4-3</button>
+    </div>
+<button onclick="avviaDraft()" style="margin-top: 25px; width: 100%; padding: 15px; background: #00f2ff; color: #0b0b1e; font-weight: bold; border-radius: 8px; cursor: pointer;">AVVIA DRAFT</button>
+</div>
+    </div>
+<div id="pagina-draft" style="display: none; width: 95%; max-width: 1000px; margin: auto; text-align: center; color: white; font-family: sans-serif;">
+    <h1>WAR ROOM: DRAFT</h1>
+    <p id="istruzioni">Premi il tasto per estrarre una squadra e clicca sui giocatori per schierarli!</p>
+    
+    <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-start;">
+        
+        <div id="area-estrazione" style="width: 300px; background: #1a1a3a; padding: 15px; border-radius: 10px; border: 1px solid #00f2ff;">
+            <h2 id="nome-squadra-estratta" style="font-size: 1.2rem; margin-top: 0;">Nessuna squadra</h2>
+            <div id="lista-giocatori-squadra" class="griglia-giocatori" style="margin-bottom: 15px;"></div>
+            <button onclick="faiRoll()" style="width: 100%; background: #00f2ff; color: #0b0b1e; padding: 10px; font-weight: bold; cursor: pointer; border: none; border-radius: 5px;">ESTRAI SQUADRA</button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div id="campo-visuale" style="
+                width: 400px; height: 500px; 
+                background: linear-gradient(to bottom, #2e7d32 50%, #2a6f2d 50%); 
+                background-size: 100% 40px; 
+                border: 3px solid white; border-radius: 10px; 
+                position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.5);">
+                
+                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: white;"></div>
+                <div style="position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+                
+                <div style="position: absolute; top: 0; left: 100px; width: 200px; height: 80px; border: 2px solid white; border-top: none;"></div>
+                <div style="position: absolute; bottom: 0; left: 100px; width: 200px; height: 80px; border: 2px solid white; border-bottom: none;"></div>
+                
+                <div style="position: absolute; top: 80px; left: 150px; width: 100px; height: 40px; border: 2px solid white; border-radius: 50% / 100% 100% 0 0; border-top: none; transform: rotate(180deg);"></div>
+                <div style="position: absolute; bottom: 80px; left: 150px; width: 100px; height: 40px; border: 2px solid white; border-radius: 50% / 100% 100% 0 0; border-top: none;"></div>
+
+                <div style="position: absolute; top: -10px; left: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
+                <div style="position: absolute; top: -10px; right: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -10px; left: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -10px; right: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
+
+                <div id="slot-titolari" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;"></div>
+                </div>
+            </div>
+
+<div style="width: 400px; background: #333; padding: 10px; border-radius: 5px; border: 2px solid #555;">
+                <p style="margin:0 0 5px 0; font-size: 0.8rem; font-weight: bold;">PANCHINA (7)</p>
+                <div id="slot-panchina" style="display: flex; gap: 10px; justify-content: center;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="schermata-gironi" style="display: none; padding: 20px; background: #222; color: white; font-family: sans-serif; min-height: 100vh; width: 100%;">
+    <h2 style="text-align: center; color: #ffcc00; margin-bottom: 20px;">FASE A GIRONI - COPPA DEL MONDO</h2>
+    
+    <div style="text-align: center; margin-bottom: 30px;">
+        <button id="btn-sorteggio" onclick="avviaSorteggioRealTime()" style="padding: 12px 25px; font-size: 16px; font-weight: bold; background: #ffcc00; border: none; border-radius: 5px; cursor: pointer; color: black; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            Procedi al Sorteggio
+        </button>
+    </div>
+
+    <div id="contenitore-gironi" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto;">
+    </div>
+</div>
+
+</body>
+<script src="squadre.js"></script>
+
+    <script>
+   // 1. CONFIGURAZIONE GLOBALE
+const impostazioniGioco = {
+    nomeTeam: "",
+    bandiera: "",
+    modulo: ""
+};
+
+let giocatoreSelezionato = null;
+let nomiSchierati = [];
+
+// 3. DATABASE MODULI
+const posizioniModuli = {
+    "4-4-2": [
+        { top: "90%", left: "50%", ruolo: "POR" },
+        { top: "75%", left: "30%", ruolo: "DIF" }, { top: "75%", left: "70%", ruolo: "DIF" },
+        { top: "65%", left: "10%", ruolo: "TER" }, { top: "65%", left: "90%", ruolo: "TER" },
+        { top: "40%", left: "30%", ruolo: "CEN" }, { top: "40%", left: "70%", ruolo: "CEN" },
+        { top: "40%", left: "10%", ruolo: "EST" }, { top: "40%", left: "90%", ruolo: "EST" },
+        { top: "15%", left: "35%", ruolo: "ATT" }, { top: "15%", left: "65%", ruolo: "ATT" }
+    ],
+    "4-3-3": [
+        { top: "90%", left: "50%", ruolo: "POR" },
+        { top: "75%", left: "30%", ruolo: "DIF" }, { top: "75%", left: "70%", ruolo: "DIF" },
+        { top: "65%", left: "10%", ruolo: "TER" }, { top: "65%", left: "90%", ruolo: "TER" },
+        { top: "55%", left: "50%", ruolo: "MED" }, { top: "45%", left: "30%", ruolo: "CEN" }, { top: "45%", left: "70%", ruolo: "CEN" },
+        { top: "15%", left: "20%", ruolo: "ALA" }, { top: "15%", left: "50%", ruolo: "ATT" }, { top: "15%", left: "80%", ruolo: "ALA" }
+    ],
+    "4-2-4": [
+        { top: "90%", left: "50%", ruolo: "POR" },
+        { top: "75%", left: "30%", ruolo: "DIF" }, { top: "75%", left: "70%", ruolo: "DIF" },
+        { top: "65%", left: "10%", ruolo: "TER" }, { top: "65%", left: "90%", ruolo: "TER" },
+        { top: "55%", left: "35%", ruolo: "MED" }, { top: "55%", left: "65%", ruolo: "MED" },
+        { top: "20%", left: "15%", ruolo: "ALA" }, { top: "20%", left: "40%", ruolo: "ATT" }, { top: "20%", left: "60%", ruolo: "ATT" }, { top: "20%", left: "85%", ruolo: "ALA" }
+    ],
+    "4-3-2-1": [
+        { top: "90%", left: "50%", ruolo: "POR" },
+        { top: "75%", left: "30%", ruolo: "DIF" }, { top: "75%", left: "70%", ruolo: "DIF" },
+        { top: "65%", left: "10%", ruolo: "TER" }, { top: "65%", left: "90%", ruolo: "TER" },
+        { top: "45%", left: "30%", ruolo: "CEN" }, { top: "55%", left: "50%", ruolo: "MED" }, { top: "45%", left: "70%", ruolo: "CEN" },
+        { top: "25%", left: "40%", ruolo: "COC" }, { top: "25%", left: "60%", ruolo: "COC" },
+        { top: "10%", left: "50%", ruolo: "ATT" }
+    ],
+    "4-2-3-1": [
+        { top: "90%", left: "50%", ruolo: "POR" },
+        { top: "75%", left: "30%", ruolo: "DIF" }, { top: "75%", left: "70%", ruolo: "DIF" },
+        { top: "75%", left: "10%", ruolo: "TER" }, { top: "75%", left: "90%", ruolo: "TER" },
+        { top: "55%", left: "35%", ruolo: "MED" }, { top: "55%", left: "65%", ruolo: "MED" },
+        { top: "30%", left: "15%", ruolo: "ALA" }, { top: "30%", left: "50%", ruolo: "COC" }, { top: "30%", left: "85%", ruolo: "ALA" },
+        { top: "10%", left: "50%", ruolo: "ATT" }
+    ],
+    "5-3-2": [
+        { top: "90%", left: "50%", ruolo: "POR" },
+        { top: "70%", left: "25%", ruolo: "DIF" }, { top: "70%", left: "50%", ruolo: "DIF" }, { top: "70%", left: "75%", ruolo: "DIF" },
+        { top: "70%", left: "5%", ruolo: "TER" }, { top: "70%", left: "95%", ruolo: "TER" },
+        { top: "45%", left: "30%", ruolo: "CEN" }, { top: "55%", left: "50%", ruolo: "MED" }, { top: "45%", left: "70%", ruolo: "CEN" },
+        { top: "15%", left: "40%", ruolo: "ATT" }, { top: "15%", left: "60%", ruolo: "ATT" }
+    ],
+    "3-5-2": [
+        { top: "90%", left: "50%", ruolo: "POR" },
+        { top: "70%", left: "30%", ruolo: "DIF" }, { top: "70%", left: "50%", ruolo: "DIF" }, { top: "70%", left: "70%", ruolo: "DIF" },
+        { top: "45%", left: "10%", ruolo: "EST" }, { top: "45%", left: "90%", ruolo: "EST" },
+        { top: "55%", left: "35%", ruolo: "MED" }, { top: "45%", left: "50%", ruolo: "CEN" }, { top: "55%", left: "65%", ruolo: "MED" },
+        { top: "15%", left: "40%", ruolo: "ATT" }, { top: "15%", left: "60%", ruolo: "ATT" }
+    ],
+    "3-4-3": [
+        { top: "85%", left: "50%", ruolo: "POR" },
+        { top: "70%", left: "30%", ruolo: "DIF" }, { top: "70%", left: "50%", ruolo: "DIF" }, { top: "70%", left: "70%", ruolo: "DIF" },
+        { top: "45%", left: "15%", ruolo: "EST" }, { top: "45%", left: "85%", ruolo: "EST" },
+        { top: "45%", left: "40%", ruolo: "CEN" }, { top: "45%", left: "60%", ruolo: "CEN" },
+        { top: "15%", left: "20%", ruolo: "ALA" }, { top: "15%", left: "50%", ruolo: "ATT" }, { top: "15%", left: "80%", ruolo: "ALA" }
+    ]
+};
+
+// 4. FUNZIONI LOGICHE
+function selezionaBandiera(codice) {
+    const tutteLeBandiere = document.querySelectorAll('.bandiera');
+    tutteLeBandiere.forEach(b => { b.style.borderColor = "#555"; b.style.boxShadow = "none"; });
+    event.currentTarget.style.borderColor = "#00f2ff";
+    event.currentTarget.style.boxShadow = "0 0 15px #00f2ff";
+    impostazioniGioco.bandiera = codice;
+}
+
+function selezionaModulo(modulo) {
+    const tuttiIModuli = document.querySelectorAll('.griglia-moduli button');
+    tuttiIModuli.forEach(btn => btn.classList.remove('selezionato'));
+    event.currentTarget.classList.add('selezionato');
+    impostazioniGioco.modulo = modulo;
+}
+
+function avviaDraft() {
+    const inputNome = document.getElementById('nome-team').value;
+    if (inputNome === "" || impostazioniGioco.bandiera === "" || impostazioniGioco.modulo === "") {
+        alert("Completa tutti i campi prima di iniziare!");
+        return;
+    }
+    impostazioniGioco.nomeTeam = inputNome;
+    document.getElementById('schermata-iniziale').style.display = 'none';
+    document.getElementById('pagina-draft').style.display = 'block';
+    disegnaCampo();
+}
+
+function disegnaCampo() {
+    const containerTitolari = document.getElementById('slot-titolari');
+    const containerPanchina = document.getElementById('slot-panchina');
+    
+    // 1. Pulisci tutto
+    containerTitolari.innerHTML = ""; 
+    containerPanchina.innerHTML = "";
+    
+    // 2. Disegna i Titolari
+    const modulo = impostazioniGioco.modulo;
+    const posizioni = posizioniModuli[modulo];
+    
+    posizioni.forEach((pos, index) => {
+        const omino = document.createElement('div');
+        omino.id = `slot-${index}`;
+        omino.className = "omino-giocatore";
+        omino.dataset.ruolo = pos.ruolo;
+        omino.style.position = "absolute";
+        omino.style.top = pos.top;
+        omino.style.left = pos.left;
+        omino.style.transform = "translate(-50%, -50%)";
+        omino.style.width = "60px";
+        omino.style.height = "60px";
+        omino.style.display = "flex";
+        omino.style.alignItems = "center";
+        omino.style.justifyContent = "center";
+        omino.style.willChange = "transform";
+        
+        omino.innerHTML = `
+            <div style="width:50px; height:50px; background-color: #ffffff; border: 2px solid #000000; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:10px; color: #000000; z-index: 10; cursor: pointer;">
+                ${pos.ruolo}
+            </div>
+        `;
+        containerTitolari.appendChild(omino);
+    });
+
+    // 3. Disegna la Panchina (7 slot suddivisi per ruolo)
+    const configurazionePanchina = [
+        { ruoli: "POR", label: "POR" },
+        { ruoli: "DIF,TER", label: "DIF" },
+        { ruoli: "DIF,TER", label: "DIF" },
+        { ruoli: "MED,CEN,EST", label: "CEN" },
+        { ruoli: "MED,CEN,EST", label: "CEN" },
+        { ruoli: "ALA,ATT,COC", label: "ATT" },
+        { ruoli: "ALA,ATT,COC", label: "ATT" }
+    ];
+
+    configurazionePanchina.forEach((slot) => {
+        const panchinaSlot = document.createElement('div');
+        panchinaSlot.className = "omino-panchina";
+        panchinaSlot.dataset.ruolo = slot.ruoli; 
+        
+        // Stile sicuro per non rompere il layout
+        panchinaSlot.style.width = "40px";
+        panchinaSlot.style.height = "40px";
+        panchinaSlot.style.background = "#fff";
+        panchinaSlot.style.border = "2px solid #555";
+        panchinaSlot.style.borderRadius = "50%";
+        panchinaSlot.style.display = "inline-flex"; 
+        panchinaSlot.style.alignItems = "center";
+        panchinaSlot.style.justifyContent = "center";
+        panchinaSlot.style.fontSize = "9px";
+        panchinaSlot.style.margin = "3px";
+        panchinaSlot.style.color = "#000"; // Testo nero per leggibilità
+        panchinaSlot.style.cursor = "pointer";
+        panchinaSlot.innerText = slot.label;
+        
+        containerPanchina.appendChild(panchinaSlot);
+    });
+}
+function illuminaSlot(ruoliGiocatore) {
+    const tutti = document.querySelectorAll('.omino-giocatore');
+    // Lista di tutti i ruoli possibili per verificare se lo slot contiene ancora il nome del ruolo
+    const ruoliStandard = ["POR", "DIF", "TER", "CEN", "MED", "COC", "ALA", "ATT", "EST"];
+    
+    tutti.forEach(slot => {
+        const ruoloSlot = slot.dataset.ruolo;
+        const cerchio = slot.querySelector('div');
+        
+        // 1. Controlla se il ruolo è compatibile
+        const eValido = ruoliGiocatore.includes(ruoloSlot);
+        
+        // 2. Controlla se è LIBERO (se il testo dentro è ancora un ruolo standard, è vuoto)
+        const eLibero = ruoliStandard.includes(cerchio.innerText);
+
+        // Illumina solo se è valido ED è libero
+        if (eValido && eLibero) {
+            slot.style.opacity = "1";
+            slot.style.boxShadow = "0 0 15px #00f2ff, 0 0 25px #00f2ff";
+            slot.style.border = "3px solid #00f2ff";
+            slot.style.transform = "translate(-50%, -50%) scale(1.1)";
+            slot.style.cursor = "pointer";
+            slot.onclick = function() { assegnaGiocatore(slot); };
+        } else {
+            // Se è occupato o non compatibile, lo spegniamo
+            slot.style.opacity = "0.2";
+            slot.style.boxShadow = "none";
+            slot.style.border = "none";
+            slot.style.transform = "translate(-50%, -50%) scale(1)";
+            slot.style.cursor = "default";
+            // Importante: se è già occupato, non vogliamo che il click faccia riassegnare
+            if (!eLibero) {
+                slot.onclick = null;
+            } else {
+                slot.onclick = null;
+            }
+        }
+    });
+}
+
+function faiRoll() {
+    // 1. CONTROLLO ROSA COMPLETA (Max 18 giocatori)
+    if (nomiSchierati.length >= 18) {
+        alert("Rosa completa! 18 giocatori schierati. È ora di generare i Mondiali!");
+        
+        // Nasconde la War Room del Draft
+        document.getElementById('pagina-draft').style.display = 'none'; 
+        
+        // Mostra la nuova schermata dei gironi che abbiamo incollato in fondo
+        document.getElementById('schermata-gironi').style.display = 'block';
+        
+        // Avvia la griglia con i gironi vuoti in attesa dei click
+        inizializzaGironiVuoti();
+        
+        return; // Blocca il roll
+    }
+
+    const nomiSquadre = Object.keys(databaseSquadre);
+    const squadraCasuale = nomiSquadre[Math.floor(Math.random() * nomiSquadre.length)];
+    const giocatori = databaseSquadre[squadraCasuale];
+    
+    const titolo = document.getElementById('nome-squadra-estratta');
+    if (titolo) {
+        titolo.innerText = "SQUADRA: " + squadraCasuale;
+    }
+    
+    giocatoreSelezionato = null; 
+    
+    const container = document.getElementById('lista-giocatori-squadra');
+    container.innerHTML = "";
+    
+    giocatori.forEach(giocatore => {
+        const div = document.createElement('div');
+        div.style.padding = "10px";
+        div.style.border = "1px solid #777";
+        div.style.margin = "5px";
+        div.style.cursor = "pointer";
+        div.style.borderRadius = "5px";
+        div.style.background = "#444";
+        div.style.color = "white";
+
+        // Se il giocatore è già schierato, lo rendiamo subito grigio e non cliccabile
+        if (nomiSchierati.includes(giocatore.nome)) {
+            div.style.opacity = "0.3";
+            div.style.pointerEvents = "none";
+        }
+
+        const ruoliModulo = posizioniModuli[impostazioniGioco.modulo].map(p => p.ruolo);
+        const isCompatibile = giocatore.ruolo.some(r => ruoliModulo.includes(r));
+
+        if (isCompatibile) {
+            // Mostra Nome, Ruoli e Statistiche in giallo (Compatibile con il Campo)
+            div.innerHTML = `
+                <strong>${giocatore.nome}</strong> (${giocatore.ruolo.join('/')})<br>
+                <small style="color: #ffcc00; font-weight: bold;">ATT: ${giocatore.att} | DIF: ${giocatore.dif} | RES: ${giocatore.res}</small>
+            `;
+
+            div.onclick = function() {
+                if (nomiSchierati.includes(giocatore.nome)) return;
+                
+                if (giocatoreSelezionato !== null) return;
+                giocatoreSelezionato = giocatore;
+                
+                const tuttiIPlayer = container.querySelectorAll('div');
+                tuttiIPlayer.forEach(d => { d.style.pointerEvents = "none"; d.style.opacity = "0.3"; });
+                illuminaSlot(giocatore.ruolo);
+                illuminaPanchina();
+            };
+        } else {
+            // Mostra Nome, Ruoli e Statistiche in grigio chiaro (Solo Panchina)
+            div.innerHTML = `
+                <strong>${giocatore.nome}</strong> (${giocatore.ruolo.join('/')}) - [Solo Panchina]<br>
+                <small style="color: #aaa;">ATT: ${giocatore.att} | DIF: ${giocatore.dif} | RES: ${giocatore.res}</small>
+            `;
+
+            div.onclick = function() {
+                if (nomiSchierati.includes(giocatore.nome)) return;
+                
+                if (giocatoreSelezionato !== null) return;
+                giocatoreSelezionato = giocatore;
+                
+                const tuttiIPlayer = container.querySelectorAll('div');
+                tuttiIPlayer.forEach(d => { d.style.pointerEvents = "none"; d.style.opacity = "0.3"; });
+                illuminaPanchina(); 
+            };
+        }
+        container.appendChild(div);
+    });
+}
+
+const lettersGironi = ["A", "B", "C", "D", "E", "F", "G", "H"];
+let strutturaGironi = {}; 
+
+function inizializzaGironiVuoti() {
+    const container = document.getElementById('contenitore-gironi');
+    if (!container) return; 
+    
+    container.innerHTML = ""; 
+    
+    lettersGironi.forEach(lettera => {
+        strutturaGironi[lettera] = []; 
+        
+        const boxGirone = document.createElement('div');
+        boxGirone.style.background = "#333";
+        boxGirone.style.border = "2px solid #555";
+        boxGirone.style.borderRadius = "8px";
+        boxGirone.style.padding = "15px";
+        boxGirone.style.boxShadow = "0 4px 10px rgba(0,0,0,0.5)";
+        
+        boxGirone.innerHTML = `
+            <h3 style="margin-top:0; color: #ffcc00; border-bottom: 1px solid #555; padding-bottom: 5px; text-align: center;">GIRONE ${lettera}</h3>
+            <ul id="lista-girone-${lettera}" style="list-style: none; padding: 0; margin: 0;">
+                <li style="padding: 8px; margin: 4px 0; background: #444; border-radius: 4px; color: #aaa; font-style: italic; text-align: center;">In attesa...</li>
+                <li style="padding: 8px; margin: 4px 0; background: #444; border-radius: 4px; color: #aaa; font-style: italic; text-align: center;">In attesa...</li>
+                <li style="padding: 8px; margin: 4px 0; background: #444; border-radius: 4px; color: #aaa; font-style: italic; text-align: center;">In attesa...</li>
+                <li style="padding: 8px; margin: 4px 0; background: #444; border-radius: 4px; color: #aaa; font-style: italic; text-align: center;">In attesa...</li>
+            </ul>
+        `;
+        container.appendChild(boxGirone);
+    });
+}
+
+// Lista delle 14 nazioni mancanti per arrivare a 32 partecipanti complessivi
+const nazioniRiempitive = [
+    "Olanda", "Belgio", "Uruguay", "Croazia", "Marocco", "Giappone", "Colombia",
+    "Cile", "Svezia", "Messico", "Senegal", "Stati Uniti", "Camerun", "Corea del Sud"
+];
+
+function avviaSorteggioRealTime() {
+    const btn = document.getElementById('btn-sorteggio');
+    if (btn) btn.disabled = true;
+
+    const inputNome = document.getElementById('nome-team');
+    const nomeMioTeam = (inputNome && inputNome.value.trim() !== "") ? inputNome.value.toUpperCase() : "MIO TEAM";
+
+    let lista32Squadre = [];
+    
+    // 1. Inserisce la squadra personalizzata creata dall'utente nel draft
+    lista32Squadre.push({ nome: nomeMioTeam, tipo: "utente" });
+    
+    // 2. Recupera tutte le squadre reali registrate nel database
+    if (typeof databaseSquadre !== 'undefined') {
+        const nomiSquadreReali = Object.keys(databaseSquadre);
+        nomiSquadreReali.forEach(nome => {
+            lista32Squadre.push({ nome: nome, tipo: "reale" });
+        });
+    }
+
+    // 3. Integra le restanti nazionali riempitive per arrivare ESATTAMENTE a 32 complessive
+    const nazioniRiempitive = [
+        "Olanda", "Belgio", "Uruguay", "Croazia", "Marocco", "Giappone", "Colombia",
+        "Cile", "Svezia", "Messico", "Senegal", "Stati Uniti", "Camerun", "Corea del Sud"
+    ];
+    
+    // Calcoliamo quante squadre mancano dinamicamente per arrivare a 32
+    const squadreMancanti = 32 - lista32Squadre.length;
+    for (let i = 0; i < squadreMancanti; i++) {
+        if (nazioniRiempitive[i]) {
+            lista32Squadre.push({ nome: nazioniRiempitive[i], tipo: "generica" });
+        } else {
+            lista32Squadre.push({ nome: `Nazionale ${i + 1}`, tipo: "generica" });
+        }
+    }
+
+    // 4. Mescola l'intero tabellone delle 32 squadre in maniera casuale
+    for (let i = lista32Squadre.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [lista32Squadre[i], lista32Squadre[j]] = [lista32Squadre[j], lista32Squadre[i]];
+    }
+
+    // Definiamo localmente le lettere per sicurezza
+    const elencoLettere = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    
+    // Ci assicuriamo che la memoria globale dei gironi esista e sia pulita
+    if (typeof strutturaGironi === 'undefined') {
+        strutturaGironi = {};
+    }
+    elencoLettere.forEach(l => strutturaGironi[l] = []);
+
+    let indiceSquadra = 0;
+    
+    // 5. Avvia l'intervallo temporizzato per riempire gli slot a cascata
+    const timerSorteggio = setInterval(() => {
+        if (indiceSquadra >= 32) {
+            clearInterval(timerSorteggio);
+            if (btn) {
+                btn.innerText = "Sorteggio Completato!";
+                btn.style.background = "#28a745";
+                btn.style.color = "white";
+            }
+            alert("Sorteggio concluso! Gli 8 gironi sono pronti per il Mondiale!");
+            return;
+        }
+
+        const letteraGirone = elencoLettere[Math.floor(indiceSquadra / 4)];
+        const squadraEstratta = lista32Squadre[indiceSquadra];
+
+        strutturaGironi[letteraGirone].push(squadraEstratta);
+        aggiornaGraficaGirone(letteraGirone);
+
+        indiceSquadra++;
+    }, 900);
+}
+function aggiornaGraficaGirone(lettera) {
+    const listaUL = document.getElementById(`lista-girone-${lettera}`);
+    if (!listaUL) return;
+
+    const squadreNelGirone = strutturaGironi[lettera];
+    let htmlContenuto = "";
+
+    for (let i = 0; i < 4; i++) {
+        if (squadreNelGirone[i]) {
+            const sq = squadreNelGirone[i];
+            let background = "#444";
+            let border = "1px solid #555";
+            let coloreTesto = "white";
+            
+            if (sq.tipo === "utente") {
+                background = "#00f2ff";
+                coloreTesto = "#0b0b1e";
+                border = "2px solid #fff";
+            } else if (sq.tipo === "reale") {
+                background = "#1a1a3a";
+                border = "1px solid #00f2ff";
+            }
+
+            htmlContenuto += `
+                <li style="padding: 8px; margin: 4px 0; background: ${background}; border: ${border}; border-radius: 4px; color: ${coloreTesto}; font-weight: bold; text-align: center; font-size: 0.9rem;">
+                    ${sq.nome}
+                </li>
+            `;
+        } else {
+            htmlContenuto += `
+                <li style="padding: 8px; margin: 4px 0; background: #222; border: 1px dashed #444; border-radius: 4px; color: #666; font-style: italic; text-align: center; font-size: 0.9rem;">
+                    In attesa...
+                </li>
+            `;
+        }
+    }
+    listaUL.innerHTML = htmlContenuto;
+}
+function illuminaPanchina() {
+    if (typeof giocatoreSelezionato === 'undefined' || !giocatoreSelezionato) return;
+    
+    // Convertiamo sempre il ruolo del giocatore in un Array, anche se è una stringa singola
+    const ruoliGiocatore = Array.isArray(giocatoreSelezionato.ruolo) 
+                           ? giocatoreSelezionato.ruolo 
+                           : [giocatoreSelezionato.ruolo];
+    
+    const slotPanchina = document.querySelectorAll('.omino-panchina');
+    
+    console.log("Illuminazione per ruoli: " + ruoliGiocatore);
+    
+    slotPanchina.forEach((p, index) => {
+        // Verifica se lo slot è libero (contiene ancora una label di ruolo)
+        const isOccupato = !["POR", "DIF", "CEN", "ATT"].includes(p.innerText);
+
+        // Controlliamo se almeno UNO dei ruoli del giocatore è presente nel dataset dello slot
+        // dataset.ruolo è una stringa come "MED,CEN,EST"
+        const ruoliSlot = p.dataset.ruolo.split(',');
+        const isCompatibile = ruoliGiocatore.some(r => ruoliSlot.includes(r));
+
+        if (isCompatibile && !isOccupato) {
+            // Effetto luce
+            p.style.border = "3px solid #ffcc00";
+            p.style.boxShadow = "0 0 15px #ffcc00";
+            p.style.cursor = "pointer";
+            
+            p.onclick = function() {
+                console.log("CLICK RICEVUTO su slot: " + index);
+                assegnaPanchina(p);
+            };
+        } else {
+            // Reset se non compatibile
+            if (!isOccupato) {
+                p.style.border = "2px solid #555";
+                p.style.boxShadow = "none";
+                p.onclick = null;
+            }
+        }
+    });
+}
+
+function assegnaPanchina(slot) {
+    if (!giocatoreSelezionato) return;
+
+    // 0. CONTROLLO DUPLICATI: Il giocatore è già stato schierato?
+    if (nomiSchierati.includes(giocatoreSelezionato.nome)) {
+        alert("Questo giocatore è già in campo o in panchina!");
+        giocatoreSelezionato = null; // Resettiamo
+        resetIlluminazione();
+        return;
+    }
+    
+    // Assegna il nome al cerchietto
+    slot.innerText = giocatoreSelezionato.nome;
+    slot.style.display = "flex";
+    slot.style.alignItems = "center";
+    slot.style.justifyContent = "center";
+    slot.style.fontSize = "9px";
+    
+    // --- AGGIUNTA FONDAMENTALE ---
+    // Memorizziamo il nome nella lista dei giocatori schierati
+    nomiSchierati.push(giocatoreSelezionato.nome);
+    console.log("Giocatore aggiunto alla panchina. Lista schierati:", nomiSchierati);
+    
+    // Blocchiamo lo slot della panchina
+    slot.onclick = null; 
+    slot.style.cursor = "default";
+    slot.style.border = "2px solid #555";
+    slot.style.boxShadow = "none";
+    
+    // Resetta la selezione globale
+    giocatoreSelezionato = null;
+    
+    // Reset estetico: rimuove l'illuminazione dagli altri slot liberi
+    document.querySelectorAll('.omino-panchina').forEach(p => {
+        // Se il testo è ancora uno dei ruoli originali, significa che è libero
+        if (["POR", "DIF", "CEN", "ATT"].includes(p.innerText)) {
+            p.style.boxShadow = "none";
+            p.style.border = "2px solid #555";
+        }
+    });
+    
+    console.log("Giocatore assegnato in panchina!");
+}
+function resetIlluminazione() {
+    // 1. Reset Titolari (il tuo codice attuale)
+    const tuttiTitolari = document.querySelectorAll('.omino-giocatore');
+    tuttiTitolari.forEach(s => {
+        s.style.opacity = "1";
+        s.style.boxShadow = "none";
+        s.style.border = "none";
+        s.style.transform = "translate(-50%, -50%) scale(1)";
+        s.style.transition = "all 0.3s ease";
+    });
+
+    // 2. Reset Panchina (AGGIUNTO)
+    const tuttiPanchina = document.querySelectorAll('.omino-panchina');
+    tuttiPanchina.forEach(p => {
+        // Se lo slot è ancora "libero" (contiene un ruolo), resetta lo stile
+        if (["POR", "DIF", "CEN", "ATT"].includes(p.innerText)) {
+            p.style.boxShadow = "none";
+            p.style.border = "2px solid #555";
+            p.onclick = null; // Toglie eventuali click rimasti
+        }
+    });
+}
+function assegnaGiocatore(slot) {
+    if (!giocatoreSelezionato) return;
+
+    // 0. CONTROLLO DUPLICATI: Il giocatore è già stato schierato?
+    if (nomiSchierati.includes(giocatoreSelezionato.nome)) {
+        alert("Questo giocatore è già in campo o in panchina!");
+        giocatoreSelezionato = null; // Resettiamo la selezione
+        resetIlluminazione();
+        return;
+    }
+
+    const cerchio = slot.querySelector('div'); 
+    
+    if (cerchio) {
+        // 1. CONTROLLO SOVRASCRITTURA
+        const ruoliValidi = ["POR", "DIF", "TER", "CEN", "MED", "COC", "ALA", "ATT", "EST"];
+        
+        if (!ruoliValidi.includes(cerchio.innerText)) {
+            console.log("Slot occupato, impossibile sovrascrivere!");
+            return;
+        }
+
+        // 2. ASSEGNAZIONE
+        cerchio.style.width = "50px";
+        cerchio.style.height = "50px";
+        cerchio.style.boxSizing = "border-box";
+        
+        cerchio.innerText = giocatoreSelezionato.nome;
+        cerchio.style.fontSize = giocatoreSelezionato.nome.length > 7 ? "9px" : "11px";
+        
+        // --- AGGIUNTA FONDAMENTALE ---
+        // Memorizziamo il nome nella lista dei giocatori schierati
+        nomiSchierati.push(giocatoreSelezionato.nome);
+        console.log("Giocatore aggiunto a nomiSchierati:", nomiSchierati);
+    }
+    
+    // 3. BLOCCO DELLO SLOT
+    slot.onclick = null; 
+    slot.style.cursor = "default";
+    
+    // 4. RESET FINALE
+    giocatoreSelezionato = null;
+    resetIlluminazione();
+    
+    console.log("Giocatore assegnato con successo!");
+}
+// Aggiungi questa funzione per sapere cosa esiste nel campo
+function ruoliPresentiNelModulo() {
+    const posizioni = posizioniModuli[impostazioniGioco.modulo];
+    // Ritorna un array unico di ruoli, es: ["POR", "DIF", "TER", ...]
+    return [...new Set(posizioni.map(p => p.ruolo))];
+}
+
+// Lanciala quando la pagina carica
+window.onload = inizializzaCampo;
+</script>
+</body>
+</html>
