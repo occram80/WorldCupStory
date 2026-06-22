@@ -187,13 +187,12 @@ button.selezionato {
                 <div style="position: absolute; bottom: -10px; right: -10px; width: 20px; height: 20px; border: 2px solid white; border-radius: 50%;"></div>
 
                 <div id="slot-titolari" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;"></div>
-                </div>
             </div>
+        </div>
 
-<div style="width: 100px; background: #333; padding: 10px; border-radius: 5px; border: 2px solid #555; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                <p style="margin: 0 0 5px 0; font-size: 0.7rem; font-weight: bold; text-align: center; color: #aaa;">PANCHINA (7)</p>
-                <div id="slot-panchina" style="display: flex; flex-direction: column; gap: 8px; justify-content: flex-start; align-items: center; width: 100%;"></div>
-            </div>
+        <div style="width: 100px; background: #333; padding: 10px; border-radius: 5px; border: 2px solid #555; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+            <p style="margin: 0 0 5px 0; font-size: 0.7rem; font-weight: bold; text-align: center; color: #aaa;">PANCHINA (7)</p>
+            <div id="slot-panchina" style="display: flex; flex-direction: column; gap: 8px; justify-content: flex-start; align-items: center; width: 100%;"></div>
         </div>
     </div>
 </div>
@@ -205,14 +204,50 @@ button.selezionato {
         <button id="btn-sorteggio" onclick="avviaSorteggioRealTime()" style="padding: 12px 25px; font-size: 16px; font-weight: bold; background: #ffcc00; border: none; border-radius: 5px; cursor: pointer; color: black; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
             Procedi al Sorteggio
         </button>
+
+<button id="btn-inizia-mondiale" onclick="vaiAlMioGirone()" style="padding: 12px 25px; font-size: 16px; font-weight: bold; background: #00f2ff; border: none; border-radius: 5px; cursor: pointer; color: #0b0b1e; box-shadow: 0 4px 10px rgba(0, 242, 255, 0.4);">
+        🚀 INIZIA IL MONDIALE
+    </button>
     </div>
 
     <div id="contenitore-gironi" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto;">
     </div>
 </div>
 
-</body>
+<div id="schermata-mio-girone" style="display: none; padding: 20px; background: #0b0b1e; color: white; font-family: sans-serif; min-height: 100vh; width: 100%; box-sizing: border-box;">
+    <h1 style="text-align: center; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; margin-bottom: 30px;">🏆 GESTIONE GIRONE MONDIALE</h1>
+
+    <div style="display: flex; gap: 30px; justify-content: center; align-items: flex-start; max-width: 1200px; margin: auto; flex-wrap: wrap;">
+        
+        <div style="flex: 1; min-width: 350px; background: #1a1a3a; padding: 20px; border-radius: 10px; border: 1px solid #00f2ff; box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);">
+            <h2 style="color: #00f2ff; margin-top: 0; text-align: center; font-size: 1.3rem;">📊 CLASSIFICA</h2>
+            <table style="width: 100%; border-collapse: collapse; text-align: center; margin-top: 15px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #00f2ff; color: #aaa; font-size: 0.9rem;">
+                        <th style="text-align: left; padding: 10px;">Squadra</th>
+                        <th>PT</th>
+                        <th>PG</th>
+                        <th>GF</th>
+                        <th>GS</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-classifica">
+                    </tbody>
+            </table>
+        </div>
+
+        <div style="flex: 1; min-width: 350px; background: #14142b; padding: 20px; border-radius: 10px; border: 1px solid #555;">
+            <h2 style="color: #ffcc00; margin-top: 0; text-align: center; font-size: 1.3rem;">📅 CALENDARIO PARTITE</h2>
+            <div id="contenitore-calendario" style="display: flex; flex-direction: column; gap: 20px; margin-top: 15px;">
+                </div>
+        </div>
+
+    </div>
+</div>
+
 <script src="squadre.js"></script>
+<script src="engine-partite.js"></script>
+<script src="gestione-gironi.js"></script>
 
     <script>
    // 1. CONFIGURAZIONE GLOBALE
@@ -583,40 +618,34 @@ function avviaSorteggioRealTime() {
 
     let lista32Squadre = [];
     
-    // 1. Inserisce la squadra personalizzata creata dall'utente nel draft
+    // 1. Inserisce la squadra personalizzata creata dall'utente nel draft (1 slot)
     lista32Squadre.push({ nome: nomeMioTeam, tipo: "utente" });
     
-    // 2. Recupera tutte le squadre reali registrate nel database
+    // 2. Recupera le squadre reali registrate nel database e ne sceglie 31 a caso
     if (typeof databaseSquadre !== 'undefined') {
-        const nomiSquadreReali = Object.keys(databaseSquadre);
-        nomiSquadreReali.forEach(nome => {
-            lista32Squadre.push({ nome: nome, tipo: "reale" });
-        });
-    }
-
-    // 3. Integra le restanti nazionali riempitive per arrivare ESATTAMENTE a 32 complessive
-    const nazioniRiempitive = [
-        "Olanda", "Belgio", "Uruguay", "Croazia", "Marocco", "Giappone", "Colombia",
-        "Cile", "Svezia", "Messico", "Senegal", "Stati Uniti", "Camerun", "Corea del Sud"
-    ];
-    
-    // Calcoliamo quante squadre mancano dinamicamente per arrivare a 32
-    const squadreMancanti = 32 - lista32Squadre.length;
-    for (let i = 0; i < squadreMancanti; i++) {
-        if (nazioniRiempitive[i]) {
-            lista32Squadre.push({ nome: nazioniRiempitive[i], tipo: "generica" });
-        } else {
-            lista32Squadre.push({ nome: `Nazionale ${i + 1}`, tipo: "generica" });
+        let nomiSquadreReali = Object.keys(databaseSquadre);
+        
+        // Mescoliamo l'elenco del database prima di pescare, così l'esclusa è sempre casuale
+        for (let i = nomiSquadreReali.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [nomiSquadreReali[i], nomiSquadreReali[j]] = [nomiSquadreReali[j], nomiSquadreReali[i]];
+        }
+        
+        // Prendiamo le prime 31 per completare i 32 slot totali del mondiale insieme all'utente
+        for (let i = 0; i < 31; i++) {
+            if (nomiSquadreReali[i]) {
+                lista32Squadre.push({ nome: nomiSquadreReali[i], tipo: "reale" });
+            }
         }
     }
 
-    // 4. Mescola l'intero tabellone delle 32 squadre in maniera casuale
+    // 3. Mescola l'intero tabellone delle 32 squadre pronte per i gironi
     for (let i = lista32Squadre.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [lista32Squadre[i], lista32Squadre[j]] = [lista32Squadre[j], lista32Squadre[i]];
     }
 
-    // Definiamo localmente le lettere per sicurezza
+    // Definiamo le lettere per gli 8 gruppi
     const elencoLettere = ["A", "B", "C", "D", "E", "F", "G", "H"];
     
     // Ci assicuriamo che la memoria globale dei gironi esista e sia pulita
@@ -627,7 +656,7 @@ function avviaSorteggioRealTime() {
 
     let indiceSquadra = 0;
     
-    // 5. Avvia l'intervallo temporizzato per riempire gli slot a cascata
+    // 4. Avvia l'intervallo temporizzato per riempire gli slot a cascata visivamente
     const timerSorteggio = setInterval(() => {
         if (indiceSquadra >= 32) {
             clearInterval(timerSorteggio);

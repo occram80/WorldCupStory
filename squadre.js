@@ -299,4 +299,108 @@ const databaseSquadre = {
         { nome: "Gerd Müller", ruolo: ["ATT"], att: 96, dif: 20, res: 82 }, // Il Bomber della nazione
         { nome: "Hölzenbein", ruolo: ["ATT", "ALA"], att: 80, dif: 40, res: 84 }
     ],
+     "Brasile 1958": [
+        { nome: "Gilmar", ruolo: ["POR"], att: 10, dif: 88, res: 80 },
+        { nome: "Bellini", ruolo: ["DIF"], att: 35, dif: 90, res: 85 },
+        { nome: "Orlando", ruolo: ["DIF"], att: 30, dif: 87, res: 84 },
+        { nome: "Djalma Santos", ruolo: ["DIF", "TER"], att: 70, dif: 89, res: 88 },
+        { nome: "Nilton Santos", ruolo: ["DIF", "TER"], att: 75, dif: 88, res: 87 },
+        { nome: "Zito", ruolo: ["CEN", "MED"], att: 65, dif: 84, res: 88 },
+        { nome: "Didi", ruolo: ["CEN"], att: 88, dif: 60, res: 85 },
+        { nome: "Garrincha", ruolo: ["ALA", "EST"], att: 96, dif: 30, res: 88 },
+        { nome: "Zagallo", ruolo: ["ALA", "CEN"], att: 82, dif: 65, res: 90 },
+        { nome: "Pelé", ruolo: ["ATT", "COC"], att: 99, dif: 40, res: 90 },
+        { nome: "Vavá", ruolo: ["ATT"], att: 90, dif: 25, res: 82 }
+    ],
+      "Brasile 1998": [
+        { nome: "Taffarel", ruolo: ["POR"], att: 10, dif: 85, res: 80 },
+        { nome: "Aldair", ruolo: ["DIF"], att: 40, dif: 88, res: 83 },
+        { nome: "Junior Baiano", ruolo: ["DIF"], att: 45, dif: 82, res: 82 },
+        { nome: "Cafu", ruolo: ["DIF", "TER"], att: 82, dif: 85, res: 95 },
+        { nome: "Roberto Carlos", ruolo: ["DIF", "TER"], att: 88, dif: 80, res: 96 },
+        { nome: "Cesar Sampaio", ruolo: ["CEN", "MED"], att: 60, dif: 84, res: 86 },
+        { nome: "Dunga", ruolo: ["CEN", "MED"], att: 65, dif: 88, res: 90 },
+        { nome: "Rivaldo", ruolo: ["COC", "ALA"], att: 92, dif: 45, res: 85 },
+        { nome: "Leonardo", ruolo: ["CEN", "COC"], att: 85, dif: 60, res: 84 },
+        { nome: "Bebeto", ruolo: ["ATT"], att: 86, dif: 30, res: 80 },
+        { nome: "Ronaldo", ruolo: ["ATT"], att: 98, dif: 20, res: 88 }
+    ],
+    "Francia 2018": [
+        { nome: "Lloris", ruolo: ["POR"], att: 10, dif: 87, res: 80 },
+        { nome: "Varane", ruolo: ["DIF"], att: 35, dif: 90, res: 86 },
+        { nome: "Umtiti", ruolo: ["DIF"], att: 30, dif: 86, res: 82 },
+        { nome: "Pavard", ruolo: ["DIF", "TER"], att: 65, dif: 83, res: 85 },
+        { nome: "Lucas Hernandez", ruolo: ["DIF", "TER"], att: 55, dif: 85, res: 86 },
+        { nome: "Kanté", ruolo: ["CEN", "MED"], att: 55, dif: 92, res: 98 },
+        { nome: "Pogba", ruolo: ["CEN"], att: 84, dif: 72, res: 85 },
+        { nome: "Matuidi", ruolo: ["CEN", "EST"], att: 68, dif: 82, res: 92 },
+        { nome: "Griezmann", ruolo: ["COC", "ATT"], att: 89, dif: 55, res: 88 },
+        { nome: "Mbappé", ruolo: ["ALA", "ATT"], att: 94, dif: 30, res: 88 },
+        { nome: "Giroud", ruolo: ["ATT"], att: 84, dif: 45, res: 84 }
+    ],
+    "Croazia 2018": [
+        { nome: "Subasic", ruolo: ["POR"], att: 10, dif: 84, res: 82 },
+        { nome: "Lovren", ruolo: ["DIF"], att: 30, dif: 84, res: 84 },
+        { nome: "Vida", ruolo: ["DIF"], att: 35, dif: 83, res: 86 },
+        { nome: "Vrsaljko", ruolo: ["DIF", "TER"], att: 65, dif: 81, res: 88 },
+        { nome: "Strinic", ruolo: ["DIF", "TER"], att: 50, dif: 79, res: 82 },
+        { nome: "Brozovic", ruolo: ["CEN", "MED"], att: 70, dif: 80, res: 96 },
+        { nome: "Modric", ruolo: ["CEN", "COC"], att: 90, dif: 72, res: 92 },
+        { nome: "Rakitic", ruolo: ["CEN"], att: 86, dif: 68, res: 88 },
+        { nome: "Perisic", ruolo: ["ALA", "EST"], att: 85, dif: 62, res: 91 },
+        { nome: "Rebic", ruolo: ["ALA", "ATT"], att: 81, dif: 50, res: 85 },
+        { nome: "Mandzukic", ruolo: ["ATT"], att: 85, dif: 65, res: 90 }
+    ],
+    "Inghilterra 1966": [
+        { nome: "Banks", ruolo: ["POR"], att: 10, dif: 92, res: 85 },
+        { nome: "Moore", ruolo: ["DIF"], att: 55, dif: 94, res: 88 },
+        { nome: "Jack Charlton", ruolo: ["DIF"], att: 30, dif: 88, res: 85 },
+        { nome: "Cohen", ruolo: ["DIF", "TER"], att: 60, dif: 85, res: 86 },
+        { nome: "Wilson", ruolo: ["DIF", "TER"], att: 58, dif: 86, res: 85 },
+        { nome: "Stiles", ruolo: ["CEN", "MED"], att: 45, dif: 88, res: 92 },
+        { nome: "Bobby Charlton", ruolo: ["CEN", "COC"], att: 92, dif: 60, res: 90 },
+        { nome: "Peters", ruolo: ["CEN"], att: 80, dif: 70, res: 86 },
+        { nome: "Ball", ruolo: ["ALA", "CEN"], att: 82, dif: 55, res: 94 },
+        { nome: "Hunt", ruolo: ["ATT"], att: 86, dif: 35, res: 84 },
+        { nome: "Hurst", ruolo: ["ATT"], att: 90, dif: 30, res: 85 }
+    ],
+    "Inghilterra 1996": [
+        { nome: "Seaman", ruolo: ["POR"], att: 10, dif: 88, res: 82 },
+        { nome: "Adams", ruolo: ["DIF"], att: 40, dif: 90, res: 86 },
+        { nome: "Southgate", ruolo: ["DIF"], att: 35, dif: 86, res: 85 },
+        { nome: "Gary Neville", ruolo: ["DIF", "TER"], att: 65, dif: 84, res: 88 },
+        { nome: "Pearce", ruolo: ["DIF", "TER"], att: 68, dif: 85, res: 86 },
+        { nome: "Ince", ruolo: ["CEN", "MED"], att: 62, dif: 84, res: 90 },
+        { nome: "Gascoigne", ruolo: ["CEN", "COC"], att: 90, dif: 50, res: 82 },
+        { nome: "Anderton", ruolo: ["ALA", "EST"], att: 80, dif: 60, res: 85 },
+        { nome: "McManaman", ruolo: ["ALA", "EST"], att: 84, dif: 45, res: 86 },
+        { nome: "Sheringham", ruolo: ["ATT", "COC"], att: 85, dif: 40, res: 82 },
+        { nome: "Shearer", ruolo: ["ATT"], att: 94, dif: 20, res: 86 }
+    ],
+    "Olanda 2010": [
+        { nome: "Stekelenburg", ruolo: ["POR"], att: 10, dif: 84, res: 82 },
+        { nome: "Heitinga", ruolo: ["DIF"], att: 35, dif: 84, res: 85 },
+        { nome: "Mathijsen", ruolo: ["DIF"], att: 25, dif: 83, res: 84 },
+        { nome: "Van der Wiel", ruolo: ["DIF", "TER"], att: 70, dif: 80, res: 88 },
+        { nome: "Van Bronckhorst", ruolo: ["DIF", "TER"], att: 74, dif: 82, res: 86 },
+        { nome: "Van Bommel", ruolo: ["CEN", "MED"], att: 60, dif: 87, res: 92 },
+        { nome: "De Jong", ruolo: ["CEN", "MED"], att: 50, dif: 89, res: 94 },
+        { nome: "Sneijder", ruolo: ["COC", "CEN"], att: 92, dif: 50, res: 86 },
+        { nome: "Robben", ruolo: ["ALA", "EST"], att: 94, dif: 35, res: 88 },
+        { nome: "Kuyt", ruolo: ["ALA", "ATT"], att: 80, dif: 68, res: 96 },
+        { nome: "Van Persie", ruolo: ["ATT"], att: 91, dif: 25, res: 84 }
+    ],
+    "Germania 2006": [
+        { nome: "Lehmann", ruolo: ["POR"], att: 10, dif: 86, res: 80 },
+        { nome: "Metzelder", ruolo: ["DIF"], att: 30, dif: 85, res: 83 },
+        { nome: "Mertesacker", ruolo: ["DIF"], att: 25, dif: 86, res: 85 },
+        { nome: "Friedrich", ruolo: ["DIF", "TER"], att: 55, dif: 83, res: 86 },
+        { nome: "Lahm", ruolo: ["DIF", "TER"], att: 76, dif: 89, res: 94 },
+        { nome: "Frings", ruolo: ["CEN", "MED"], att: 72, dif: 84, res: 91 },
+        { nome: "Ballack", ruolo: ["CEN", "COC"], att: 88, dif: 75, res: 88 },
+        { nome: "Schneider", ruolo: ["CEN", "EST"], att: 80, dif: 60, res: 85 },
+        { nome: "Schweinsteiger", ruolo: ["CEN", "ALA"], att: 82, dif: 68, res: 88 },
+        { nome: "Podolski", ruolo: ["ATT", "ALA"], att: 86, dif: 35, res: 84 },
+        { nome: "Klose", ruolo: ["ATT"], att: 93, dif: 40, res: 86 }
+    ]
 };
