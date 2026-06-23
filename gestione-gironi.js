@@ -5,6 +5,9 @@ let squadreGirone = []; // Conterrà i nomi delle 4 squadre del girone
 let classifica = {};    // Conterrà i dati (punti, giocate, golFatti, golSubiti)
 let calendario = [];    // Conterrà le 3 giornate con le relative partite
 
+let giornataCorrente = 1; // <--- NUOVA: Tiene traccia di quale giornata si deve giocare (1, 2 o 3)
+
+// ==========================================
 // ==========================================
 // 1. INIZIALIZZAZIONE DEL GIRONE
 // ==========================================
@@ -12,7 +15,6 @@ function inizializzaGirone(quattroSquadre) {
     squadreGirone = quattroSquadre; 
     classifica = {};
     calendario = [];
-
     // Crea la struttura della classifica a zero per ogni squadra
     squadreGirone.forEach(squadra => {
         classifica[squadra] = { punti: 0, giocate: 0, golFatti: 0, golSubiti: 0 };
@@ -86,7 +88,7 @@ function renderizzaClassifica() {
 }
 
 // ==========================================
-// 3. DISEGNA IL CALENDARIO A SCHERMO
+// 3. DISEGNA IL CALENDARIO A SCHERMO (AGGIORNATO CON FILTRI E BLOCCHI)
 // ==========================================
 function renderizzaCalendario() {
     const contenitore = document.getElementById('contenitore-calendario');
@@ -94,24 +96,73 @@ function renderizzaCalendario() {
     
     contenitore.innerHTML = "";
 
+    // Recuperiamo il nome esatto del team utente per i controlli
+    let nomeMioTeam = "MIO TEAM";
+    if (typeof impostazioniGioco !== 'undefined' && impostazioniGioco.nomeTeam && impostazioniGioco.nomeTeam.trim() !== "") {
+        nomeMioTeam = impostazioniGioco.nomeTeam.toUpperCase();
+    } else {
+        const inputNome = document.getElementById('nome-team');
+        if (inputNome && inputNome.value.trim() !== "") nomeMioTeam = inputNome.value.toUpperCase();
+    }
+
     calendario.forEach(g => {
         let htmlGiornata = `
             <div style="background: #2a2a2a; padding: 10px; border-radius: 5px;">
                 <h3 style="margin: 0 0 10px 0; font-size: 0.9rem; color: #ffcc00; border-bottom: 1px solid #444; padding-bottom: 5px;">GIORNATA ${g.giornata}</h3>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
         `;
 
         g.partite.forEach((p, index) => {
             let risCasa = p.golCasa !== null ? p.golCasa : "-";
             let risFuori = p.golFuori !== null ? p.golFuori : "-";
             
+            // Verifica se questa partita coinvolge l'utente
+            let ePartitaUtente = (p.casa.toUpperCase() === nomeMioTeam || p.fuori.toUpperCase() === nomeMioTeam);
+            
+            // Generazione dinamica del bottone basata sullo stato
+            let bottoneHTML = "";
+            
+            if (ePartitaUtente) {
+                if (p.giocata) {
+                    // Partita già conclusa
+                    bottoneHTML = `<div style="color: #28a745; font-size: 0.8rem; font-weight: bold; text-align: center;">✅ PARTITA GIOCATA</div>`;
+                } else if (g.giornata === giornataCorrente) {
+                    // Giornata corrente ed è la tua partita: ATTIVO!
+                    bottoneHTML = `
+                        <div style="text-align: center;">
+                            <button onclick="preparaMatchLive('${p.casa.replace(/'/g, "\\'")}', '${p.fuori.replace(/'/g, "\\'")}')" style="background: #00f2ff; color: #000; border: none; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: 0.2s;">
+                                VAI ALLA PARTITA ⚽
+                            </button>
+                        </div>`;
+                } else {
+                    // Giornata futura: BLOCCATO
+                    bottoneHTML = `
+                        <div style="text-align: center;">
+                            <button disabled style="background: #555; color: #aaa; border: none; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; cursor: not-allowed;">
+                                BLOCCATA 🔒
+                            </button>
+                        </div>`;
+                }
+            } else {
+                // Partite CPU vs CPU (Nessun bottone)
+                if (p.giocata) {
+                    bottoneHTML = `<div style="color: #aaa; font-size: 0.75rem; font-style: italic; text-align: center;">Simulata</div>`;
+                } else {
+                    bottoneHTML = `<div style="color: #666; font-size: 0.75rem; font-style: italic; text-align: center;">In attesa dell'utente...</div>`;
+                }
+            }
+            
             htmlGiornata += `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 8px 12px; border-radius: 4px; font-size: 0.9rem;">
-                    <div style="flex: 1; text-align: right; font-weight: bold; padding-right: 10px;">${p.casa}</div>
-                    <div style="background: #333; padding: 4px 10px; border-radius: 3px; font-weight: bold; color: #00f2ff; min-width: 40px; text-align: center;">
-                        ${risCasa} - ${risFuori}
+                <div style="display: flex; flex-direction: column; background: #1e1e1e; padding: 10px; border-radius: 4px; gap: 8px; border-left: ${ePartitaUtente ? '3px solid #00f2ff' : 'none'};">
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+                        <div style="flex: 1; text-align: right; font-weight: bold; padding-right: 10px; color: ${p.casa.toUpperCase() === nomeMioTeam ? '#00f2ff' : 'white'}">${p.casa}</div>
+                        <div style="background: #333; padding: 4px 10px; border-radius: 3px; font-weight: bold; color: #00f2ff; min-width: 40px; text-align: center;">
+                            ${risCasa} - ${risFuori}
+                        </div>
+                        <div style="flex: 1; text-align: left; font-weight: bold; padding-left: 10px; color: ${p.fuori.toUpperCase() === nomeMioTeam ? '#00f2ff' : 'white'}">${p.fuori}</div>
                     </div>
-                    <div style="flex: 1; text-align: left; font-weight: bold; padding-left: 10px;">${p.fuori}</div>
+                    
+                    ${bottoneHTML}
                 </div>
             `;
         });
@@ -119,9 +170,7 @@ function renderizzaCalendario() {
         htmlGiornata += `</div></div>`;
         contenitore.innerHTML += htmlGiornata;
     });
-}
-// ==========================================
-// 4. TRANSIZIONE: VAI ALLA SCHERMATA DEL GIRONE REALE
+}// 4. TRANSIZIONE: VAI ALLA SCHERMATA DEL GIRONE REALE
 // ==========================================
 function vaiAlMioGirone() {
     // 1. Controllo di sicurezza: il sorteggio deve essere stato fatto!

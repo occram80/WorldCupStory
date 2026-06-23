@@ -1,6 +1,7 @@
 // Database delle Squadre per il progetto Mondiali
 const databaseSquadre = {
     "Italia 1982": [
+        // TITOLARI STORICI
         { nome: "Zoff", ruolo: ["POR"], att: 10, dif: 90, res: 80 },
         { nome: "Gentile", ruolo: ["DIF", "TER"], att: 40, dif: 92, res: 88 },
         { nome: "Scirea", ruolo: ["DIF"], att: 50, dif: 90, res: 85 },
@@ -11,9 +12,19 @@ const databaseSquadre = {
         { nome: "Conti", ruolo: ["ALA", "EST"], att: 85, dif: 40, res: 85 },
         { nome: "Antognoni", ruolo: ["CEN", "COC"], att: 88, dif: 50, res: 80 },
         { nome: "Graziani", ruolo: ["ATT", "ALA"], att: 80, dif: 50, res: 85 },
-        { nome: "Rossi", ruolo: ["ATT"], att: 92, dif: 20, res: 80 }
+        { nome: "Rossi", ruolo: ["ATT"], att: 92, dif: 20, res: 80 },
+        
+        // PANCHINA E RISERVE AMPIATE
+        { nome: "Bordon", ruolo: ["POR"], att: 10, dif: 82, res: 80 },
+        { nome: "Baresi F.", ruolo: ["DIF"], att: 45, dif: 85, res: 84 },
+        { nome: "Vierchowod", ruolo: ["DIF"], att: 25, dif: 86, res: 88 },
+        { nome: "Marini", ruolo: ["CEN", "MED"], att: 55, dif: 81, res: 86 },
+        { nome: "Dossena", ruolo: ["CEN"], att: 72, dif: 60, res: 83 },
+        { nome: "Causio", ruolo: ["ALA", "EST"], att: 81, dif: 45, res: 78 },
+        { nome: "Altobelli", ruolo: ["ATT"], att: 86, dif: 25, res: 84 }
     ],
     "Brasile 1970": [
+        // TITOLARI ORIGINALI
         { nome: "Felix", ruolo: ["POR"], att: 10, dif: 80, res: 75 },
         { nome: "Carlos Alberto", ruolo: ["DIF", "TER"], att: 80, dif: 85, res: 88 },
         { nome: "Brito", ruolo: ["DIF"], att: 30, dif: 88, res: 80 },
@@ -24,7 +35,16 @@ const databaseSquadre = {
         { nome: "Jairzinho", ruolo: ["ALA", "ATT"], att: 95, dif: 30, res: 88 },
         { nome: "Pelé", ruolo: ["COC", "ATT"], att: 99, dif: 30, res: 90 },
         { nome: "Tostao", ruolo: ["ATT", "COC"], att: 90, dif: 30, res: 82 },
-        { nome: "Rivelino", ruolo: ["ALA", "CEN"], att: 92, dif: 35, res: 85 }
+        { nome: "Rivelino", ruolo: ["ALA", "CEN"], att: 92, dif: 35, res: 85 },
+        
+        // PANCHINA AGGIUNTA (7 GIOCATORI PER ARRIVARE A 18)
+        { nome: "Ado", ruolo: ["POR"], att: 5, dif: 78, res: 70 },
+        { nome: "Marco Antonio", ruolo: ["DIF", "TER"], att: 65, dif: 80, res: 82 },
+        { nome: "Baldocchi", ruolo: ["DIF"], att: 20, dif: 82, res: 78 },
+        { nome: "Fontana", ruolo: ["DIF"], att: 25, dif: 81, res: 75 },
+        { nome: "Paulo Cezar", ruolo: ["CEN", "ALA"], att: 82, dif: 45, res: 83 },
+        { nome: "Jose Guilherme", ruolo: ["MED", "CEN"], att: 55, dif: 78, res: 80 },
+        { nome: "Edu", ruolo: ["ALA", "ATT"], att: 85, dif: 25, res: 80 }
     ],
     "Argentina 1986": [
         { nome: "Pumpido", ruolo: ["POR"], att: 10, dif: 85, res: 80 },
