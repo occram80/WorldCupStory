@@ -1,7 +1,9 @@
 // Database delle Squadre per il progetto Mondiali
 const databaseSquadre = {
-    "Italia 1982": [
-        // TITOLARI STORICI
+    "Italia 1982": {
+    modulo: "4-3-3",
+    rosa: [
+        // TITOLARI STORICI (I primi 11)
         { nome: "Zoff", ruolo: ["POR"], att: 10, dif: 90, res: 80 },
         { nome: "Gentile", ruolo: ["DIF", "TER"], att: 40, dif: 92, res: 88 },
         { nome: "Scirea", ruolo: ["DIF"], att: 50, dif: 90, res: 85 },
@@ -14,7 +16,7 @@ const databaseSquadre = {
         { nome: "Graziani", ruolo: ["ATT", "ALA"], att: 80, dif: 50, res: 85 },
         { nome: "Rossi", ruolo: ["ATT"], att: 92, dif: 20, res: 80 },
         
-        // PANCHINA E RISERVE AMPIATE
+        // PANCHINA E RISERVE AMPLIATE (I successivi 7)
         { nome: "Bordon", ruolo: ["POR"], att: 10, dif: 82, res: 80 },
         { nome: "Baresi F.", ruolo: ["DIF"], att: 45, dif: 85, res: 84 },
         { nome: "Vierchowod", ruolo: ["DIF"], att: 25, dif: 86, res: 88 },
@@ -22,9 +24,37 @@ const databaseSquadre = {
         { nome: "Dossena", ruolo: ["CEN"], att: 72, dif: 60, res: 83 },
         { nome: "Causio", ruolo: ["ALA", "EST"], att: 81, dif: 45, res: 78 },
         { nome: "Altobelli", ruolo: ["ATT"], att: 86, dif: 25, res: 84 }
-    ],
-    "Brasile 1970": [
-        // TITOLARI ORIGINALI
+    ]
+},"Italia 1982": {
+    modulo: "4-3-3",
+    rosa: [
+        // TITOLARI STORICI (I primi 11)
+        { nome: "Zoff", ruolo: ["POR"], att: 10, dif: 90, res: 80 },
+        { nome: "Gentile", ruolo: ["DIF", "TER"], att: 40, dif: 92, res: 88 },
+        { nome: "Scirea", ruolo: ["DIF"], att: 50, dif: 90, res: 85 },
+        { nome: "Collovati", ruolo: ["DIF"], att: 30, dif: 88, res: 82 },
+        { nome: "Cabrini", ruolo: ["DIF", "TER"], att: 65, dif: 82, res: 85 },
+        { nome: "Oriali", ruolo: ["CEN", "MED"], att: 60, dif: 85, res: 90 },
+        { nome: "Tardelli", ruolo: ["CEN"], att: 75, dif: 80, res: 92 },
+        { nome: "Conti", ruolo: ["ALA", "EST"], att: 85, dif: 40, res: 85 },
+        { nome: "Antognoni", ruolo: ["CEN", "COC"], att: 88, dif: 50, res: 80 },
+        { nome: "Graziani", ruolo: ["ATT", "ALA"], att: 80, dif: 50, res: 85 },
+        { nome: "Rossi", ruolo: ["ATT"], att: 92, dif: 20, res: 80 },
+        
+        // PANCHINA E RISERVE AMPLIATE (I successivi 7)
+        { nome: "Bordon", ruolo: ["POR"], att: 10, dif: 82, res: 80 },
+        { nome: "Baresi F.", ruolo: ["DIF"], att: 45, dif: 85, res: 84 },
+        { nome: "Vierchowod", ruolo: ["DIF"], att: 25, dif: 86, res: 88 },
+        { nome: "Marini", ruolo: ["CEN", "MED"], att: 55, dif: 81, res: 86 },
+        { nome: "Dossena", ruolo: ["CEN"], att: 72, dif: 60, res: 83 },
+        { nome: "Causio", ruolo: ["ALA", "EST"], att: 81, dif: 45, res: 78 },
+        { nome: "Altobelli", ruolo: ["ATT"], att: 86, dif: 25, res: 84 }
+    ]
+},
+   "Brasile 1970": {
+    modulo: "4-2-4",
+    rosa: [
+        // TITOLARI ORIGINALI (I primi 11)
         { nome: "Felix", ruolo: ["POR"], att: 10, dif: 80, res: 75 },
         { nome: "Carlos Alberto", ruolo: ["DIF", "TER"], att: 80, dif: 85, res: 88 },
         { nome: "Brito", ruolo: ["DIF"], att: 30, dif: 88, res: 80 },
@@ -45,8 +75,12 @@ const databaseSquadre = {
         { nome: "Paulo Cezar", ruolo: ["CEN", "ALA"], att: 82, dif: 45, res: 83 },
         { nome: "Jose Guilherme", ruolo: ["MED", "CEN"], att: 55, dif: 78, res: 80 },
         { nome: "Edu", ruolo: ["ALA", "ATT"], att: 85, dif: 25, res: 80 }
-    ],
-    "Argentina 1986": [
+    ]
+},
+  "Argentina 1986": {
+    modulo: "4-4-2",
+    rosa: [
+        // TITOLARI ORIGINALI (I primi 11)
         { nome: "Pumpido", ruolo: ["POR"], att: 10, dif: 85, res: 80 },
         { nome: "Cuciuffo", ruolo: ["DIF", "TER"], att: 40, dif: 84, res: 85 },
         { nome: "Brown", ruolo: ["DIF"], att: 30, dif: 88, res: 85 },
@@ -57,9 +91,22 @@ const databaseSquadre = {
         { nome: "Enrique", ruolo: ["CEN"], att: 65, dif: 75, res: 88 },
         { nome: "Burruchaga", ruolo: ["COC", "ALA"], att: 85, dif: 50, res: 85 },
         { nome: "Maradona", ruolo: ["COC", "ATT"], att: 99, dif: 20, res: 90 },
-        { nome: "Valdano", ruolo: ["ATT", "ALA"], att: 90, dif: 30, res: 85 }
-    ],
-    "Germania 1990": [
+        { nome: "Valdano", ruolo: ["ATT", "ALA"], att: 90, dif: 30, res: 85 },
+        
+        // PANCHINA AGGIUNTA (7 GIOCATORI REALI PER ARRIVARE A 18)
+        { nome: "Islas", ruolo: ["POR"], att: 5, dif: 80, res: 75 },
+        { nome: "Clausen", ruolo: ["DIF", "TER"], att: 55, dif: 81, res: 82 },
+        { nome: "Garrè", ruolo: ["DIF"], att: 35, dif: 79, res: 80 },
+        { nome: "Tapia", ruolo: ["CEN", "COC"], att: 78, dif: 55, res: 82 },
+        { nome: "Trobbiani", ruolo: ["CEN"], att: 70, dif: 62, res: 80 },
+        { nome: "Borghi", ruolo: ["ALA", "COC"], att: 82, dif: 40, res: 78 },
+        { nome: "Pasculli", ruolo: ["ATT"], att: 83, dif: 25, res: 81 }
+    ]
+},
+   "Germania 1990": {
+    modulo: "4-4-2",
+    rosa: [
+        // TITOLARI ORIGINALI (I primi 11)
         { nome: "Illgner", ruolo: ["POR"], att: 10, dif: 88, res: 80 },
         { nome: "Augenthaler", ruolo: ["DIF"], att: 50, dif: 90, res: 85 },
         { nome: "Kohler", ruolo: ["DIF"], att: 30, dif: 92, res: 88 },
@@ -70,9 +117,22 @@ const databaseSquadre = {
         { nome: "Littbarski", ruolo: ["ALA", "COC"], att: 88, dif: 30, res: 82 },
         { nome: "Bein", ruolo: ["COC"], att: 82, dif: 40, res: 80 },
         { nome: "Voller", ruolo: ["ATT"], att: 89, dif: 30, res: 85 },
-        { nome: "Klinsmann", ruolo: ["ATT"], att: 91, dif: 25, res: 88 }
-    ],
-     "Francia 1998": [
+        { nome: "Klinsmann", ruolo: ["ATT"], att: 91, dif: 25, res: 88 },
+        
+        // PANCHINA AGGIUNTA (7 GIOCATORI REALI PER ARRIVARE A 18)
+        { nome: "Aumann", ruolo: ["POR"], att: 5, dif: 83, res: 75 },
+        { nome: "Berthold", ruolo: ["DIF", "TER"], att: 58, dif: 84, res: 85 },
+        { nome: "Pflugler", ruolo: ["DIF"], att: 40, dif: 80, res: 82 },
+        { nome: "Thon", ruolo: ["CEN", "DIF"], att: 78, dif: 70, res: 84 },
+        { nome: "Moller", ruolo: ["COC", "CEN"], att: 84, dif: 45, res: 83 },
+        { nome: "Riedle", ruolo: ["ATT"], att: 86, dif: 30, res: 82 },
+        { nome: "Mill", ruolo: ["ATT"], att: 78, dif: 32, res: 80 }
+    ]
+},
+  "Francia 1998": {
+    modulo: "4-4-2",
+    rosa: [
+        // TITOLARI ORIGINALI (I primi 11)
         { nome: "Barthez", ruolo: ["POR"], att: 10, dif: 88, res: 82 },
         { nome: "Thuram", ruolo: ["DIF", "TER"], att: 55, dif: 91, res: 88 },
         { nome: "Blanc", ruolo: ["DIF"], att: 50, dif: 89, res: 84 },
@@ -80,37 +140,73 @@ const databaseSquadre = {
         { nome: "Lizarazu", ruolo: ["DIF", "TER"], att: 60, dif: 86, res: 86 },
         { nome: "Deschamps", ruolo: ["CEN", "MED"], att: 45, dif: 88, res: 90 },
         { nome: "Petit", ruolo: ["CEN"], att: 65, dif: 82, res: 85 },
-        { nome: "Karembeu", ruolo: ["CEN", "EST"], att: 55, dif: 80, res: 88 }, // Esterno di spinta
-        { nome: "Zidane", ruolo: ["CEN", "COC"], att: 90, dif: 55, res: 84 },  // Trequartista (COC)
+        { nome: "Karembeu", ruolo: ["CEN", "EST"], att: 55, dif: 80, res: 88 },
+        { nome: "Zidane", ruolo: ["CEN", "COC"], att: 90, dif: 55, res: 84 },
         { nome: "Djorkaeff", ruolo: ["ATT", "COC"], att: 84, dif: 45, res: 82 },
-        { nome: "Guivarc'h", ruolo: ["ATT"], att: 78, dif: 35, res: 80 }
-    ],
-    "Brasile 2002": [
+        { nome: "Guivarc'h", ruolo: ["ATT"], att: 78, dif: 35, res: 80 },
+        
+        // PANCHINA AGGIUNTA (7 GIOCATORI REALI PER ARRIVARE A 18)
+        { nome: "Lama", ruolo: ["POR"], att: 5, dif: 82, res: 75 },
+        { nome: "Leboeuf", ruolo: ["DIF"], att: 45, dif: 83, res: 80 },
+        { nome: "Candela", ruolo: ["DIF", "TER"], att: 62, dif: 78, res: 82 },
+        { nome: "Vieira", ruolo: ["MED", "CEN"], att: 65, dif: 84, res: 85 },
+        { nome: "Pires", ruolo: ["ALA", "CEN"], att: 81, dif: 45, res: 80 },
+        { nome: "Henry", ruolo: ["ATT", "ALA"], att: 85, dif: 30, res: 84 },
+        { nome: "Trezeguet", ruolo: ["ATT"], att: 84, dif: 20, res: 80 }
+    ]
+},
+   "Brasile 2002": {
+    modulo: "3-4-3",
+    rosa: [
+        // TITOLARI ORIGINALI (I primi 11)
         { nome: "Marcos", ruolo: ["POR"], att: 10, dif: 85, res: 80 },
         { nome: "Lucio", ruolo: ["DIF"], att: 60, dif: 88, res: 86 },
         { nome: "Edmilson", ruolo: ["DIF", "MED"], att: 55, dif: 84, res: 82 },
         { nome: "Roque Junior", ruolo: ["DIF"], att: 35, dif: 82, res: 80 },
-        { nome: "Cafu", ruolo: ["DIF", "TER", "EST"], att: 75, dif: 84, res: 95 }, // Esterno devastante
-        { nome: "Roberto Carlos", ruolo: ["DIF", "TER", "EST"], att: 82, dif: 80, res: 93 }, // Esterno devastante
+        { nome: "Cafu", ruolo: ["DIF", "TER", "EST"], att: 75, dif: 84, res: 95 },
+        { nome: "Roberto Carlos", ruolo: ["DIF", "TER", "EST"], att: 82, dif: 80, res: 93 },
         { nome: "Gilberto Silva", ruolo: ["CEN", "MED"], att: 50, dif: 86, res: 88 },
         { nome: "Kleberson", ruolo: ["CEN"], att: 65, dif: 75, res: 86 },
-        { nome: "Ronaldinho", ruolo: ["ATT", "COC", "ALA"], att: 92, dif: 40, res: 83 }, // Esterno/Ala/COC
-        { nome: "Rivaldo", ruolo: ["ATT", "COC"], att: 90, dif: 45, res: 82 },
-        { nome: "Ronaldo", ruolo: ["ATT"], att: 96, dif: 25, res: 80 }
-    ],
-    "Italia 2006": [
+        { nome: "Ronaldinho", ruolo: ["ATT", "COC", "ALA"], att: 92, dif: 40, res: 83 },
+        { nome: "Rivaldo", ruolo: ["ATT", "ALA"], att: 90, dif: 45, res: 82 },
+        { nome: "Ronaldo", ruolo: ["ATT"], att: 96, dif: 25, res: 80 },
+        
+        // PANCHINA AGGIUNTA (7 GIOCATORI REALI PER ARRIVARE A 18)
+        { nome: "Dida", ruolo: ["POR"], att: 5, dif: 83, res: 78 },
+        { nome: "Junior", ruolo: ["DIF", "TER"], att: 68, dif: 76, res: 82 },
+        { nome: "Anderson Polga", ruolo: ["DIF"], att: 25, dif: 78, res: 80 },
+        { nome: "Vampeta", ruolo: ["CEN", "MED"], att: 64, dif: 76, res: 82 },
+        { nome: "Juninho Paulista", ruolo: ["COC", "CEN"], att: 83, dif: 50, res: 80 },
+        { nome: "Kaka", ruolo: ["COC", "CEN"], att: 85, dif: 40, res: 84 },
+        { nome: "Denilson", ruolo: ["ALA", "EST"], att: 82, dif: 30, res: 81 }
+    ]
+},
+   "Italia 2006": {
+    modulo: "4-4-2",
+    rosa: [
+        // TITOLARI ORIGINALI (I primi 11)
         { nome: "Buffon", ruolo: ["POR"], att: 10, dif: 95, res: 85 },
-        { nome: "Zambrotta", ruolo: ["DIF", "TER", "EST"], att: 70, dif: 88, res: 92 }, // Gioca ovunque sulle fasce
+        { nome: "Zambrotta", ruolo: ["DIF", "TER", "EST"], att: 70, dif: 88, res: 92 },
         { nome: "Cannavaro", ruolo: ["DIF"], att: 40, dif: 96, res: 90 },
         { nome: "Materazzi", ruolo: ["DIF"], att: 60, dif: 90, res: 85 },
-        { nome: "Grosso", ruolo: ["DIF", "TER", "EST"], att: 72, dif: 82, res: 88 }, // Spinge tantissimo
+        { nome: "Grosso", ruolo: ["DIF", "TER", "EST"], att: 72, dif: 82, res: 88 },
         { nome: "Gattuso", ruolo: ["CEN", "MED"], att: 40, dif: 92, res: 96 },
         { nome: "Pirlo", ruolo: ["CEN"], att: 80, dif: 65, res: 85 },
-        { nome: "Camoranesi", ruolo: ["CEN", "EST", "ALA"], att: 78, dif: 60, res: 86 }, // Perfetto esterno per il 4-4-2
-        { nome: "Perrotta", ruolo: ["CEN", "EST"], att: 70, dif: 75, res: 92 }, // Esterno/Incursore
+        { nome: "Camoranesi", ruolo: ["CEN", "EST", "ALA"], att: 78, dif: 60, res: 86 },
+        { nome: "Perrotta", ruolo: ["CEN", "EST"], att: 70, dif: 75, res: 92 },
         { nome: "Totti", ruolo: ["ATT", "COC"], att: 91, dif: 45, res: 82 },
-        { nome: "Toni", ruolo: ["ATT"], att: 90, dif: 30, res: 84 }
-    ],
+        { nome: "Toni", ruolo: ["ATT"], att: 90, dif: 30, res: 84 },
+        
+        // PANCHINA AGGIUNTA (7 GIOCATORI REALI PER ARRIVARE A 18)
+        { nome: "Peruzzi", ruolo: ["POR"], att: 5, dif: 84, res: 75 },
+        { nome: "Nesta", ruolo: ["DIF"], att: 35, dif: 92, res: 80 },
+        { nome: "Barzagli", ruolo: ["DIF"], att: 25, dif: 84, res: 82 },
+        { nome: "De Rossi", ruolo: ["MED", "CEN"], att: 74, dif: 84, res: 88 },
+        { nome: "Barone", ruolo: ["CEN"], att: 60, dif: 70, res: 82 },
+        { nome: "Del Piero", ruolo: ["ATT", "ALA"], att: 88, dif: 35, res: 80 },
+        { nome: "Gilardino", ruolo: ["ATT"], att: 85, dif: 25, res: 83 }
+    ]
+},
     "Argentina 2022": [
         { nome: "E. Martinez", ruolo: ["POR"], att: 10, dif: 88, res: 85 },
         { nome: "Molina", ruolo: ["DIF", "TER", "EST"], att: 68, dif: 80, res: 88 },

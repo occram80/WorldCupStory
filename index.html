@@ -152,7 +152,7 @@ button.selezionato {
             
             <div style="text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #333; font-family: monospace; font-size: 0.8rem; color: #555;">
                 <span>By <strong style="color: #00f2ff;">OCCRAM80</strong></span> 
-                <span style="margin-left: 10px; background: #222; padding: 2px 6px; border-radius: 3px; color: #ffcc00; border: 1px solid #333;">v0.1</span>
+                <span style="margin-left: 10px; background: #222; padding: 2px 6px; border-radius: 3px; color: #ffcc00; border: 1px solid #333;">v0.2</span>
             </div>
         </div>
     </div>
@@ -548,7 +548,10 @@ function faiRoll() {
 
     const nomiSquadre = Object.keys(databaseSquadre);
     const squadraCasuale = nomiSquadre[Math.floor(Math.random() * nomiSquadre.length)];
-    const giocatori = databaseSquadre[squadraCasuale];
+    
+    // 🔥 CONTROLLO STRUTTURA: Se la squadra è un oggetto prende .rosa, altrimenti prende l'array diretto (fallback squadre vecchie)
+    const datiSquadra = databaseSquadre[squadraCasuale];
+    const giocatori = Array.isArray(datiSquadra) ? datiSquadra : datiSquadra.rosa;
     
     const titolo = document.getElementById('nome-squadra-estratta');
     if (titolo) {
@@ -618,7 +621,6 @@ function faiRoll() {
         container.appendChild(div);
     });
 }
-
 const lettersGironi = ["A", "B", "C", "D", "E", "F", "G", "H"];
 let strutturaGironi = {}; 
 
@@ -828,15 +830,19 @@ function assegnaPanchina(slot) {
     slot.style.background = impostazioniGioco.coloreMaglia || "#444";
     slot.style.color = impostazioniGioco.coloreTestoMaglia || "#ffffff";
     
-    // --- AGGIUNTA FONDAMENTALE ---
     // Memorizziamo il nome nella lista dei giocatori schierati
     nomiSchierati.push(giocatoreSelezionato.nome);
     
-    // SALVIAMO L'OGGETTO COMPLETO ANCHE DALLA PANCHINA
-    rosaGiocatoreOggetti.push(giocatoreSelezionato);
+    // 🔥 MODIFICA: Arricchiamo l'oggetto e lo tagghiamo come panchina
+    let copiaGiocatore = { ...giocatoreSelezionato };
+    copiaGiocatore.schieramento = "panchina"; // Segnamo che va in panchina
+    copiaGiocatore.ruoloDinamico = "PANCHINA";
+    
+    // SALVIAMO L'OGGETTO MODIFICATO
+    rosaGiocatoreOggetti.push(copiaGiocatore);
     
     console.log("Giocatore aggiunto alla panchina. Lista schierati:", nomiSchierati);
-    console.log("Oggetto panchina salvato in rosaGiocatoreOggetti:", rosaGiocatoreOggetti);
+    console.log("Oggetto panchina salvato:", rosaGiocatoreOggetti);
     
     // Blocchiamo lo slot della panchina
     slot.onclick = null; 
@@ -849,7 +855,6 @@ function assegnaPanchina(slot) {
     
     // Reset estetico: rimuove l'illuminazione dagli altri slot liberi
     document.querySelectorAll('.omino-panchina').forEach(p => {
-        // Se il testo è ancora uno dei ruoli originali, significa che è libero
         if (["POR", "DIF", "CEN", "ATT"].includes(p.innerText)) {
             p.style.boxShadow = "none";
             p.style.border = "2px solid #555";
@@ -907,7 +912,7 @@ function assegnaGiocatore(slot) {
         cerchio.style.height = "50px";
         cerchio.style.boxSizing = "border-box";
         
-        // Applica dinamicamente il colore della maglia nazionale scelta (con salvagente se non ancora cliccata)
+        // Applica dinamicamente il colore della maglia nazionale scelta
         cerchio.style.background = impostazioniGioco.coloreMaglia || "#444";
         cerchio.style.color = impostazioniGioco.coloreTestoMaglia || "#ffffff";
         cerchio.style.border = "2px solid white"; // Un bel bordino bianco stile maglia da gioco
@@ -915,15 +920,20 @@ function assegnaGiocatore(slot) {
         cerchio.innerText = giocatoreSelezionato.nome;
         cerchio.style.fontSize = giocatoreSelezionato.nome.length > 7 ? "9px" : "11px";
         
-// --- AGGIUNTA FONDAMENTALE ---
         // Memorizziamo il nome nella lista dei giocatori schierati
         nomiSchierati.push(giocatoreSelezionato.nome);
         
-        // SALVIAMO L'OGGETTO COMPLETO PER IL LIVE ENGINE DELLA PARTITA
-        rosaGiocatoreOggetti.push(giocatoreSelezionato);
+        // 🔥 MODIFICA SALVATAGGIO: Arricchiamo l'oggetto salvando anche l'ID univoco dello slot per l'ordine visivo
+        let copiaGiocatore = { ...giocatoreSelezionato };
+        copiaGiocatore.schieramento = "campo";             // Segnamo che va in campo
+        copiaGiocatore.ruoloDinamico = slot.dataset.ruolo; // Salviamo il ruolo dello slot (es: POR, DIF, ATT)
+        copiaGiocatore.idSlot = slot.id || slot.dataset.id || Math.random(); // Salva l'identificativo del modulo
         
-        console.log("Giocatore aggiunto a nomiSchierati:", nomiSchierati);
-        console.log("Dati completi salvati in rosaGiocatoreOggetti:", rosaGiocatoreOggetti);
+        // SALVIAMO L'OGGETTO MODIFICATO
+        rosaGiocatoreOggetti.push(copiaGiocatore);
+        
+        console.log("Giocatore aggiunto con idSlot:", copiaGiocatore.idSlot);
+        console.log("Dati completi con ruolo dinamico salvati:", rosaGiocatoreOggetti);
     }
     
     // 3. BLOCCO DELLO SLOT
@@ -935,8 +945,7 @@ function assegnaGiocatore(slot) {
     resetIlluminazione();
     
     console.log("Giocatore assegnato con successo!");
-}
-// Aggiungi questa funzione per sapere cosa esiste nel campo
+}// Aggiungi questa funzione per sapere cosa esiste nel campo
 function ruoliPresentiNelModulo() {
     const posizioni = posizioniModuli[impostazioniGioco.modulo];
     // Ritorna un array unico di ruoli, es: ["POR", "DIF", "TER", ...]
