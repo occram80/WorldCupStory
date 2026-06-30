@@ -207,46 +207,88 @@ const databaseSquadre = {
         { nome: "Gilardino", ruolo: ["ATT"], att: 85, dif: 25, res: 83 }
     ]
 },
-    "Argentina 2022": [
+    "Argentina 2022": {
+    modulo: "4-3-3",
+    rosa: [
+        // TITOLARI
         { nome: "E. Martinez", ruolo: ["POR"], att: 10, dif: 88, res: 85 },
         { nome: "Molina", ruolo: ["DIF", "TER", "EST"], att: 68, dif: 80, res: 88 },
         { nome: "Romero", ruolo: ["DIF"], att: 45, dif: 89, res: 86 },
         { nome: "Otamendi", ruolo: ["DIF"], att: 50, dif: 87, res: 84 },
         { nome: "Tagliafico", ruolo: ["DIF", "TER"], att: 60, dif: 82, res: 85 },
-        { nome: "De Paul", ruolo: ["CEN", "EST"], att: 75, dif: 78, res: 94 }, // Ottimo anche come esterno di destra
+        { nome: "De Paul", ruolo: ["CEN", "EST"], att: 75, dif: 78, res: 94 },
         { nome: "Enzo Fernandez", ruolo: ["CEN", "MED"], att: 78, dif: 82, res: 88 },
         { nome: "Mac Allister", ruolo: ["CEN"], att: 80, dif: 74, res: 86 },
-        { nome: "Di Maria", ruolo: ["ALA", "EST"], att: 88, dif: 45, res: 82 }, // L'esterno/ala perfetto
-        { nome: "Messi", ruolo: ["ATT", "COC"], att: 95, dif: 30, res: 80 },
-        { nome: "Alvarez", ruolo: ["ATT"], att: 88, dif: 45, res: 88 }
-    ],
-     "Francia 2026": [
+        { nome: "Di Maria", ruolo: ["ALA", "EST"], att: 88, dif: 45, res: 82 },
+        { nome: "Messi", ruolo: ["ATT", "ALA"], att: 95, dif: 30, res: 80 },
+        { nome: "Alvarez", ruolo: ["ATT"], att: 88, dif: 45, res: 88 },
+        
+        // PANCHINA
+        { nome: "Armani", ruolo: ["POR"], att: 5, dif: 82, res: 80 },
+        { nome: "Lisandro Martinez", ruolo: ["DIF"], att: 40, dif: 86, res: 82 },
+        { nome: "Montiel", ruolo: ["DIF", "TER"], att: 65, dif: 78, res: 84 },
+        { nome: "Paredes", ruolo: ["MED", "CEN"], att: 70, dif: 75, res: 82 },
+        { nome: "Guido Rodriguez", ruolo: ["MED"], att: 55, dif: 80, res: 80 },
+        { nome: "Dybala", ruolo: ["COC", "ATT"], att: 87, dif: 35, res: 78 },
+        { nome: "Lautaro Martinez", ruolo: ["ATT"], att: 88, dif: 40, res: 85 }
+    ]
+},
+     "Francia 2026": {
+    modulo: "4-2-3-1",
+    rosa: [
+        // TITOLARI
         { nome: "Maignan", ruolo: ["POR"], att: 10, dif: 91, res: 84 },
         { nome: "Koundé", ruolo: ["DIF", "TER"], att: 60, dif: 86, res: 88 },
         { nome: "Upamecano", ruolo: ["DIF"], att: 45, dif: 87, res: 85 },
         { nome: "Saliba", ruolo: ["DIF"], att: 40, dif: 92, res: 88 },
-        { nome: "T. Hernandez", ruolo: ["DIF", "TER", "EST"], att: 82, dif: 80, res: 91 }, // Esterno devastante
+        { nome: "T. Hernandez", ruolo: ["DIF", "TER", "EST"], att: 82, dif: 80, res: 91 },
         { nome: "Tchouaméni", ruolo: ["CEN", "MED"], att: 65, dif: 88, res: 89 },
         { nome: "Camavinga", ruolo: ["CEN", "MED"], att: 72, dif: 84, res: 90 },
-        { nome: "Dembélé", ruolo: ["ALA", "EST"], att: 86, dif: 35, res: 82 }, // Velocità pura sulla fascia
-        { nome: "Griezmann", ruolo: ["CEN", "COC"], att: 88, dif: 60, res: 86 }, // Tuttofare offensivo (COC)
+        { nome: "Dembélé", ruolo: ["ALA", "EST"], att: 86, dif: 35, res: 82 },
+        { nome: "Griezmann", ruolo: ["CEN", "COC"], att: 88, dif: 60, res: 86 },
         { nome: "Mbappé", ruolo: ["ATT", "ALA"], att: 97, dif: 25, res: 88 },
-        { nome: "Thuram K.", ruolo: ["ATT"], att: 84, dif: 40, res: 85 }
-    ],
-    "Spagna 2026": [
+        { nome: "Thuram K.", ruolo: ["ATT"], att: 84, dif: 40, res: 85 },
+
+        // PANCHINA
+        { nome: "Areola", ruolo: ["POR"], att: 5, dif: 80, res: 80 },
+        { nome: "Konaté", ruolo: ["DIF"], att: 35, dif: 88, res: 84 },
+        { nome: "Pavard", ruolo: ["DIF", "TER"], att: 60, dif: 83, res: 85 },
+        { nome: "Rabiot", ruolo: ["CEN"], att: 75, dif: 78, res: 86 },
+        { nome: "Zaire-Emery", ruolo: ["CEN"], att: 70, dif: 75, res: 85 },
+        { nome: "Coman", ruolo: ["ALA"], att: 84, dif: 30, res: 80 },
+        { nome: "Kolo Muani", ruolo: ["ATT"], att: 83, dif: 35, res: 84 }
+    ]
+},
+    "Spagna 2026": {
+    modulo: "4-3-3",
+    rosa: [
+        // TITOLARI
         { nome: "Unai Simon", ruolo: ["POR"], att: 10, dif: 87, res: 82 },
         { nome: "Carvajal", ruolo: ["DIF", "TER"], att: 68, dif: 89, res: 88 },
         { nome: "Le Normand", ruolo: ["DIF"], att: 40, dif: 86, res: 84 },
         { nome: "Laporte", ruolo: ["DIF"], att: 50, dif: 88, res: 85 },
         { nome: "Cucurella", ruolo: ["DIF", "TER"], att: 65, dif: 84, res: 90 },
-        { nome: "Rodri", ruolo: ["CEN", "MED"], att: 82, dif: 93, res: 94 }, // Il cervello del centrocampo
+        { nome: "Rodri", ruolo: ["CEN", "MED"], att: 82, dif: 93, res: 94 },
         { nome: "Pedri", ruolo: ["CEN"], att: 80, dif: 70, res: 86 },
-        { nome: "Dani Olmo", ruolo: ["CEN", "COC", "EST"], att: 85, dif: 50, res: 84 }, // Esterno/Trequartista creativo
-        { nome: "Lamine Yamal", ruolo: ["ALA", "EST"], att: 90, dif: 40, res: 85 }, // Esterno/Ala fortissimo
-        { nome: "Nico Williams", ruolo: ["ALA", "EST"], att: 89, dif: 38, res: 86 }, // Altro esterno perfetto
-        { nome: "Morata", ruolo: ["ATT"], att: 85, dif: 45, res: 87 }
-    ],
-    "Inghilterra 2026": [
+        { nome: "Dani Olmo", ruolo: ["CEN", "COC", "EST"], att: 85, dif: 50, res: 84 },
+        { nome: "Lamine Yamal", ruolo: ["ALA", "EST"], att: 90, dif: 40, res: 85 },
+        { nome: "Nico Williams", ruolo: ["ALA", "EST"], att: 89, dif: 38, res: 86 },
+        { nome: "Morata", ruolo: ["ATT"], att: 85, dif: 45, res: 87 },
+
+        // PANCHINA
+        { nome: "David Raya", ruolo: ["POR"], att: 5, dif: 85, res: 80 },
+        { nome: "Vivian", ruolo: ["DIF"], att: 35, dif: 85, res: 82 },
+        { nome: "Grimaldo", ruolo: ["TER", "DIF"], att: 78, dif: 75, res: 85 },
+        { nome: "Fabian Ruiz", ruolo: ["CEN"], att: 82, dif: 72, res: 84 },
+        { nome: "Mikel Merino", ruolo: ["CEN"], att: 76, dif: 78, res: 85 },
+        { nome: "Ferran Torres", ruolo: ["ALA", "ATT"], att: 84, dif: 40, res: 80 },
+        { nome: "Oyarzabal", ruolo: ["ATT", "ALA"], att: 83, dif: 45, res: 82 }
+    ]
+},
+   "Inghilterra 2026": {
+    modulo: "4-2-3-1",
+    rosa: [
+        // TITOLARI
         { nome: "Pickford", ruolo: ["POR"], att: 10, dif: 85, res: 83 },
         { nome: "Walker", ruolo: ["DIF", "TER"], att: 60, dif: 90, res: 92 },
         { nome: "John Stones", ruolo: ["DIF", "MED"], att: 65, dif: 88, res: 86 },
@@ -254,12 +296,25 @@ const databaseSquadre = {
         { nome: "Trippier", ruolo: ["DIF", "TER", "EST"], att: 72, dif: 82, res: 85 },
         { nome: "Rice", ruolo: ["CEN", "MED"], att: 70, dif: 90, res: 93 },
         { nome: "Mainoo", ruolo: ["CEN"], att: 74, dif: 76, res: 85 },
-        { nome: "Bellingham", ruolo: ["CEN", "COC"], att: 92, dif: 75, res: 92 }, // Centrocampista totale / COC
-        { nome: "Saka", ruolo: ["ALA", "EST"], att: 88, dif: 50, res: 88 }, // Perfetto esterno destro
-        { nome: "Foden", ruolo: ["ALA", "EST", "COC"], att: 90, dif: 45, res: 86 }, // Esterno sinistro di qualità
-        { nome: "Harry Kane", ruolo: ["ATT"], att: 94, dif: 35, res: 84 }
-    ],
-    "Brasile 2026": [
+        { nome: "Bellingham", ruolo: ["CEN", "COC"], att: 92, dif: 75, res: 92 },
+        { nome: "Saka", ruolo: ["ALA", "EST"], att: 88, dif: 50, res: 88 },
+        { nome: "Foden", ruolo: ["ALA", "EST", "COC"], att: 90, dif: 45, res: 86 },
+        { nome: "Harry Kane", ruolo: ["ATT"], att: 94, dif: 35, res: 84 },
+
+        // PANCHINA
+        { nome: "Ramsdale", ruolo: ["POR"], att: 5, dif: 82, res: 80 },
+        { nome: "Trent Alexander-Arnold", ruolo: ["TER", "CEN"], att: 85, dif: 70, res: 82 },
+        { nome: "Maguire", ruolo: ["DIF"], att: 30, dif: 84, res: 80 },
+        { nome: "Gallagher", ruolo: ["CEN"], att: 72, dif: 78, res: 88 },
+        { nome: "Palmer", ruolo: ["COC", "ALA"], att: 88, dif: 40, res: 84 },
+        { nome: "Grealish", ruolo: ["ALA", "EST"], att: 84, dif: 45, res: 82 },
+        { nome: "Watkins", ruolo: ["ATT"], att: 85, dif: 35, res: 85 }
+    ]
+},
+    "Brasile 2026": {
+    modulo: "4-2-3-1",
+    rosa: [
+        // TITOLARI
         { nome: "Alisson", ruolo: ["POR"], att: 10, dif: 92, res: 83 },
         { nome: "Danilo", ruolo: ["DIF", "TER"], att: 55, dif: 85, res: 86 },
         { nome: "Marquinhos", ruolo: ["DIF"], att: 50, dif: 89, res: 87 },
@@ -267,50 +322,99 @@ const databaseSquadre = {
         { nome: "Arana", ruolo: ["DIF", "TER"], att: 65, dif: 80, res: 84 },
         { nome: "Bruno Guimaraes", ruolo: ["CEN", "MED"], att: 72, dif: 83, res: 88 },
         { nome: "Paquetá", ruolo: ["CEN", "COC"], att: 80, dif: 65, res: 85 },
-        { nome: "Rodrygo", ruolo: ["ATT", "ALA", "EST"], att: 88, dif: 40, res: 86 }, // Esterno d'attacco
-        { nome: "Raphinha", ruolo: ["ALA", "EST"], att: 85, dif: 45, res: 88 }, // Esterno di centrocampo/attacco
+        { nome: "Rodrygo", ruolo: ["ATT", "ALA", "EST"], att: 88, dif: 40, res: 86 },
+        { nome: "Raphinha", ruolo: ["ALA", "EST"], att: 85, dif: 45, res: 88 },
         { nome: "Vinicius Jr", ruolo: ["ATT", "ALA"], att: 95, dif: 30, res: 89 },
-        { nome: "Endrick", ruolo: ["ATT"], att: 86, dif: 25, res: 82 }
-    ],
-     "Argentina 2026": [
-        { nome: "E. Martinez ", ruolo: ["POR"], att: 10, dif: 90, res: 86 },
-        { nome: "Molina ", ruolo: ["DIF", "TER", "EST"], att: 70, dif: 81, res: 89 },
-        { nome: "Cuti Romero ", ruolo: ["DIF"], att: 45, dif: 91, res: 88 },
+        { nome: "Endrick", ruolo: ["ATT"], att: 86, dif: 25, res: 82 },
+
+        // PANCHINA
+        { nome: "Ederson", ruolo: ["POR"], att: 10, dif: 90, res: 82 },
+        { nome: "Eder Militao", ruolo: ["DIF"], att: 52, dif: 87, res: 84 },
+        { nome: "Bremer", ruolo: ["DIF"], att: 48, dif: 86, res: 85 },
+        { nome: "Douglas Luiz", ruolo: ["CEN", "MED"], att: 74, dif: 78, res: 86 },
+        { nome: "Ederson Silva", ruolo: ["CEN", "MED"], att: 70, dif: 80, res: 87 },
+        { nome: "Martinelli", ruolo: ["ALA", "ATT"], att: 84, dif: 38, res: 85 },
+        { nome: "Savinho", ruolo: ["ALA", "EST"], att: 83, dif: 42, res: 84 }
+    ]
+},
+     "Argentina 2026": {
+    modulo: "4-3-3",
+    rosa: [
+        // TITOLARI
+        { nome: "E. Martinez", ruolo: ["POR"], att: 10, dif: 90, res: 86 },
+        { nome: "Molina", ruolo: ["DIF", "TER", "EST"], att: 70, dif: 81, res: 89 },
+        { nome: "Cuti Romero", ruolo: ["DIF"], att: 45, dif: 91, res: 88 },
         { nome: "Lisandro Martinez", ruolo: ["DIF"], att: 50, dif: 88, res: 86 },
-        { nome: "Tagliafico ", ruolo: ["DIF", "TER"], att: 60, dif: 83, res: 84 },
-        { nome: "De Paul ", ruolo: ["CEN", "EST"], att: 76, dif: 80, res: 95 },
-        { nome: "Enzo F. ", ruolo: ["CEN", "MED"], att: 80, dif: 83, res: 89 },
-        { nome: "Mac Allister ", ruolo: ["CEN"], att: 82, dif: 76, res: 88 },
-        { nome: "Nico Gonzalez", ruolo: ["ALA", "EST"], att: 80, dif: 55, res: 90 }, // Esterno di corsa e sacrificio
-        { nome: "Messi ", ruolo: ["ATT", "COC"], att: 93, dif: 25, res: 78 },
-        { nome: "Julian Alvarez ", ruolo: ["ATT"], att: 89, dif: 50, res: 91 }
-    ],
-    "Italia 2021": [
+        { nome: "Tagliafico", ruolo: ["DIF", "TER"], att: 60, dif: 83, res: 84 },
+        { nome: "De Paul", ruolo: ["CEN", "EST"], att: 76, dif: 80, res: 95 },
+        { nome: "Enzo F.", ruolo: ["CEN", "MED"], att: 80, dif: 83, res: 89 },
+        { nome: "Mac Allister", ruolo: ["CEN"], att: 82, dif: 76, res: 88 },
+        { nome: "Nico Gonzalez", ruolo: ["ALA", "EST"], att: 80, dif: 55, res: 90 },
+        { nome: "Messi", ruolo: ["ATT", "COC", "ALA"], att: 93, dif: 25, res: 78 }, // Ruolo ALA aggiunto!
+        { nome: "Julian Alvarez", ruolo: ["ATT"], att: 89, dif: 50, res: 91 },
+
+        // PANCHINA
+        { nome: "Rulli", ruolo: ["POR"], att: 5, dif: 81, res: 80 },
+        { nome: "Otamendi", ruolo: ["DIF"], att: 40, dif: 84, res: 78 },
+        { nome: "Montiel", ruolo: ["DIF", "TER"], att: 62, dif: 80, res: 85 },
+        { nome: "Paredes", ruolo: ["CEN", "MED"], att: 72, dif: 81, res: 84 },
+        { nome: "Lo Celso", ruolo: ["CEN", "COC"], att: 78, dif: 70, res: 82 },
+        { nome: "Lautaro Martinez", ruolo: ["ATT"], att: 90, dif: 40, res: 87 },
+        { nome: "Garnacho", ruolo: ["ALA", "ATT"], att: 84, dif: 35, res: 85 }
+    ]
+},
+    "Italia 2021": {
+    modulo: "4-3-3",
+    rosa: [
+        // TITOLARI
         { nome: "Donnarumma", ruolo: ["POR"], att: 10, dif: 93, res: 85 },
         { nome: "Di Lorenzo", ruolo: ["DIF", "TER"], att: 65, dif: 84, res: 90 },
         { nome: "Bonucci", ruolo: ["DIF"], att: 55, dif: 88, res: 83 },
         { nome: "Chiellini", ruolo: ["DIF"], att: 30, dif: 92, res: 82 },
-        { nome: "Spinazzola", ruolo: ["DIF", "TER", "EST"], att: 80, dif: 78, res: 88 }, // Freccia a sinistra (EST)
+        { nome: "Spinazzola", ruolo: ["DIF", "TER", "EST"], att: 80, dif: 78, res: 88 },
         { nome: "Barella", ruolo: ["CEN"], att: 78, dif: 82, res: 95 },
         { nome: "Jorginho", ruolo: ["CEN", "MED"], att: 75, dif: 80, res: 88 },
         { nome: "Verratti", ruolo: ["CEN"], att: 78, dif: 82, res: 85 },
-        { nome: "Chiesa", ruolo: ["ALA", "EST"], att: 88, dif: 50, res: 90 }, // Perfetto per spaccare le fasce
+        { nome: "Chiesa", ruolo: ["ALA", "EST"], att: 88, dif: 50, res: 90 },
         { nome: "Insigne", ruolo: ["ALA", "COC"], att: 84, dif: 40, res: 82 },
-        { nome: "Immobile", ruolo: ["ATT"], att: 86, dif: 30, res: 85 }
-    ],
-    "Portogallo 2016": [
+        { nome: "Immobile", ruolo: ["ATT"], att: 86, dif: 30, res: 85 },
+
+        // PANCHINA
+        { nome: "Sirigu", ruolo: ["POR"], att: 5, dif: 80, res: 78 },
+        { nome: "Acerbi", ruolo: ["DIF"], att: 40, dif: 83, res: 82 },
+        { nome: "Emerson Palmieri", ruolo: ["DIF", "TER", "EST"], att: 72, dif: 78, res: 85 },
+        { nome: "Locatelli", ruolo: ["CEN", "MED"], att: 76, dif: 78, res: 86 },
+        { nome: "Pessina", ruolo: ["CEN", "COC"], att: 75, dif: 74, res: 88 },
+        { nome: "Berardi", ruolo: ["ALA", "EST"], att: 82, dif: 45, res: 84 },
+        { nome: "Belotti", ruolo: ["ATT"], att: 80, dif: 40, res: 86 }
+    ]
+},
+    "Portogallo 2016": {
+    modulo: "4-4-2",
+    rosa: [
+        // TITOLARI
         { nome: "Rui Patricio", ruolo: ["POR"], att: 10, dif: 86, res: 84 },
         { nome: "Cedric", ruolo: ["DIF", "TER"], att: 60, dif: 80, res: 85 },
         { nome: "Pepe", ruolo: ["DIF"], att: 40, dif: 93, res: 90 },
         { nome: "Fonte", ruolo: ["DIF"], att: 30, dif: 85, res: 83 },
-        { nome: "Raphael Guerreiro", ruolo: ["DIF", "TER", "EST"], att: 75, dif: 78, res: 86 }, // Terzino/Esterno tecnico
+        { nome: "Raphael Guerreiro", ruolo: ["DIF", "TER", "EST"], att: 75, dif: 78, res: 86 },
         { nome: "William Carvalho", ruolo: ["CEN", "MED"], att: 50, dif: 84, res: 85 },
         { nome: "Adrien Silva", ruolo: ["CEN"], att: 68, dif: 78, res: 86 },
-        { nome: "Joao Mario", ruolo: ["CEN", "EST"], att: 74, dif: 72, res: 88 }, // Esterno di manovra
+        { nome: "Joao Mario", ruolo: ["CEN", "EST"], att: 74, dif: 72, res: 88 },
         { nome: "Renato Sanches", ruolo: ["CEN"], att: 75, dif: 75, res: 90 },
         { nome: "Nani", ruolo: ["ALA", "EST", "ATT"], att: 84, dif: 45, res: 84 },
-        { nome: "Cristiano Ronaldo", ruolo: ["ATT", "ALA"], att: 96, dif: 30, res: 91 }
-    ],
+        { nome: "Cristiano Ronaldo", ruolo: ["ATT", "ALA"], att: 96, dif: 30, res: 91 },
+
+        // PANCHINA
+        { nome: "Anthony Lopes", ruolo: ["POR"], att: 5, dif: 82, res: 80 },
+        { nome: "Bruno Alves", ruolo: ["DIF"], att: 35, dif: 81, res: 75 },
+        { nome: "Eliseu", ruolo: ["DIF", "TER"], att: 65, dif: 74, res: 80 },
+        { nome: "Danilo Pereira", ruolo: ["CEN", "MED"], att: 60, dif: 82, res: 85 },
+        { nome: "Joao Moutinho", ruolo: ["CEN"], att: 76, dif: 74, res: 83 },
+        { nome: "Ricardo Quaresma", ruolo: ["ALA", "EST"], att: 83, dif: 38, res: 80 },
+        { nome: "Eder", ruolo: ["ATT"], att: 78, dif: 40, res: 84 } // L'uomo del destino!
+    ]
+},
     "Brasile 1994": [
         { nome: "Taffarel", ruolo: ["POR"], att: 10, dif: 86, res: 84 },
         { nome: "Jorginho 94", ruolo: ["DIF", "TER", "EST"], att: 75, dif: 82, res: 88 },

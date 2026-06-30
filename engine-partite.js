@@ -91,7 +91,9 @@ function preparaMatchLiveEngine(casa, fuori) {
     // Switch di schermata
     document.getElementById('schermata-mio-girone').style.display = 'none';
     document.getElementById('schermata-partita-live').style.display = 'block';
-}// ==========================================
+}
+
+// ==========================================
 // FUNZIONE: CALCOLA IL BONUS MODULO IN ATTACCO DELLA CPU
 // ==========================================
 function ottieniBonusModuloAttaccoCpu() {
@@ -153,15 +155,14 @@ function calcolaForzaDifesa(rosaSquadra, bonusModulo) {
     return sommaDifesa + (bonusModulo * 10);
 }
 // ==========================================
-// ENGINE PROVA BASE: CALCOLO AZIONE E GOL
+// ENGINE PROVA BASE: CALCOLO AZIONE E GOL (RADDRIZZATO CASA/TRASFERTA)
 // ==========================================
 function eseguiCalcoloMinutoPartita(minuto) {
     // 1. PROBABILITÀ BASE: C'è un'azione pericolosa in questo minuto? (12% di chance)
     if (Math.random() > 0.12) return null; 
 
-    // 2. PROVA BASE: Scegliamo a caso chi attacca (50% Casa, 50% Fuori)
-    // (Nel prossimo step qui inseriremo la sfida dei Centrocampi!)
-    const attaccaCasa = Math.random() < 0.5;
+    // 2. IDENTIFICA CHI ATTACCA (50% Utente, 50% CPU)
+    const attaccaUtente = Math.random() < 0.5;
     
     let attaccanti = [];
     let difensori = [];
@@ -169,27 +170,87 @@ function eseguiCalcoloMinutoPartita(minuto) {
     let bonusModuloDifesa = 0;
     let squadraInAttacco = "";
 
-    if (attaccaCasa) {
-        squadraInAttacco = squadraCasaNome;
+    // Capiamo se l'utente gioca in casa o fuori guardando il database
+    const utenteInCasa = !databaseSquadre[squadraCasaNome]; 
+
+    if (attaccaUtente) {
+        // Attacca l'utente (rosaGiocatoreOggetti)
+        squadraInAttacco = utenteInCasa ? squadraCasaNome : squadraFuoriNome;
         attaccanti = rosaGiocatoreOggetti.filter(g => g.schieramento === "campo");
         difensori = giocatoriFuoriLive.filter(g => g.schieramento === "campo");
+        
         bonusModuloAttacco = typeof ottieniBonusModuloAttaccoUtente === 'function' ? ottieniBonusModuloAttaccoUtente() : 0;
         bonusModuloDifesa = typeof ottieniBonusModuloDifesaCpu === 'function' ? ottieniBonusModuloDifesaCpu() : 0;
     } else {
-        squadraInAttacco = squadraFuoriNome;
+        // Attacca la CPU (giocatoriFuoriLive)
+        squadraInAttacco = utenteInCasa ? squadraFuoriNome : squadraCasaNome;
         attaccanti = giocatoriFuoriLive.filter(g => g.schieramento === "campo");
         difensori = rosaGiocatoreOggetti.filter(g => g.schieramento === "campo");
+        
         bonusModuloAttacco = typeof ottieniBonusModuloAttaccoCpu === 'function' ? ottieniBonusModuloAttaccoCpu() : 0;
         bonusModuloDifesa = typeof ottieniBonusModuloDifesaUtente === 'function' ? ottieniBonusModuloDifesaUtente() : 0;
     }
 
     if (attaccanti.length === 0 || difensori.length === 0) return null;
 
-    // 3. SELEZIONE DEI PROTAGONISTI (Un attaccante e un difensore a caso tra quelli in campo)
-    const tiratore = attaccanti[Math.floor(Math.random() * attaccanti.length)];
-    const difensore = difensori[Math.floor(Math.random() * difensori.length)];
+    // ==========================================
+    // 3. SELEZIONE PESATA DEI PROTAGONISTI (LOGICA LOTTERIA)
+    // ==========================================
+    
+    // Assegna i biglietti per la probabilità di tirare in porta
+    const ottieniPesoAttacco = (ruolo) => {
+        switch (ruolo) {
+            case "ATT":
+            case "ALA": return 70;  // Tirano spessissimo
+            case "CEN":
+            case "EST":
+            case "COC": return 25;  // Si inseriscono ogni tanto
+            case "DIF":
+            case "TER": return 5;   // Solo sui calci piazzati
+            case "POR": return 0;   // Il portiere non va mai a tirare
+            default: return 10;
+        }
+    };
 
-    // 4. RECUPERO MODIFICATORI ENERGIA (Dalla funzione dell'interfaccia)
+    // Assegna i biglietti per la probabilità di contrastare l'azione
+    const ottieniPesoDifesa = (ruolo) => {
+        switch (ruolo) {
+            case "DIF":
+            case "TER": return 65;  // Fanno il muro difensivo
+            case "MED":
+            case "CEN": return 30;  // Aiutano in mezzo al campo
+            case "ALA":
+            case "ATT":
+            case "COC":
+            case "EST": return 5;   // Ripiegano raramente
+            case "POR": return 0;   // Il portiere gestisce il tiro dopo, non contrasta l'azione
+            default: return 10;
+        }
+    };
+
+    // Estrazione del Tiratore
+    let poolAttacco = [];
+    attaccanti.forEach(g => {
+        let biglietti = ottieniPesoAttacco(g.ruoloDinamico);
+        for (let i = 0; i < biglietti; i++) {
+            poolAttacco.push(g);
+        }
+    });
+    const tiratore = poolAttacco.length > 0 ? poolAttacco[Math.floor(Math.random() * poolAttacco.length)] : attaccanti[0];
+
+    // Estrazione del Difensore che contrasta
+    let poolDifesa = [];
+    difensori.forEach(g => {
+        let biglietti = ottieniPesoDifesa(g.ruoloDinamico);
+        for (let i = 0; i < biglietti; i++) {
+            poolDifesa.push(g);
+        }
+    });
+    const difensore = poolDifesa.length > 0 ? poolDifesa[Math.floor(Math.random() * poolDifesa.length)] : difensori[0];
+
+    // ==========================================
+    // 4. RECUPERO MODIFICATORI ENERGIA
+    // ==========================================
     const modEnergiaAtt = typeof calcolaModificatoreEnergia === 'function' ? calcolaModificatoreEnergia(tiratore.energiaAttuale) : 0;
     const modEnergiaDif = typeof calcolaModificatoreEnergia === 'function' ? calcolaModificatoreEnergia(difensore.energiaAttuale) : 0;
 
@@ -204,17 +265,16 @@ function eseguiCalcoloMinutoPartita(minuto) {
     // 7. VERDETTO
     let esitoAzione = {
         min: minuto,
-        squadra: squadraInAttacco,
+        squadra: squadraInAttacco, 
         cronaca: "",
         isGol: false
     };
 
     if (totaleAttacco > totaleDifesa) {
         esitoAzione.isGol = true;
-        esitoAzione.cronaca = `⚽ GOL! Grande spunto di ${tiratore.nome} che supera ${difensore.nome} e scarica un tiro potente che si insacca!`;
+        esitoAzione.cronaca = `⚽ GOL! Grande spunto di ${tiratore.nome} che supera ${difensore.nome} e scarica un tiro potente che si insacca per il ${squadraInAttacco.toUpperCase()}!`;
     } else {
         esitoAzione.isGol = false;
-        // Scegliamo una frase di errore a caso per variare
         const variantiNoGol = [
             `Tiro di ${tiratore.nome}, ma ${difensore.nome} si oppone da campione e allontana la sfera.`,
             `${tiratore.nome} tenta la conclusione, ma strozza troppo il tiro e la palla esce sul fondo.`,

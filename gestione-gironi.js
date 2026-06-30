@@ -222,3 +222,58 @@ function vaiAlMioGirone() {
     
     console.log(`Mondiale iniziato! Trovato nel Girone ${mioGironeTrovato} con:`, squadreDelMioGirone);
 }
+
+// ==========================================
+// SIMULA AUTOMATICAMENTE LE PARTITE CPU DELLA GIORNATA CORRENTE
+// ==========================================
+function simulaPartiteCPU() {
+    // 1. Recuperiamo il nome esatto del team utente per scartarlo
+    let nomeMioTeam = "MIO TEAM";
+    if (typeof impostazioniGioco !== 'undefined' && impostazioniGioco.nomeTeam && impostazioniGioco.nomeTeam.trim() !== "") {
+        nomeMioTeam = impostazioniGioco.nomeTeam.toUpperCase();
+    }
+
+    // 2. Cerchiamo la giornata attuale nel calendario
+    const giornataAttualeOggetto = calendario.find(g => g.giornata === giornataCorrente);
+    if (!giornataAttualeOggetto) return;
+
+    // 3. Cicliamo sulle partite della giornata
+    giornataAttualeOggetto.partite.forEach(p => {
+        let casaUpper = p.casa.toUpperCase();
+        let fuoriUpper = p.fuori.toUpperCase();
+        let mioUpper = nomeMioTeam.toUpperCase();
+
+        // Se la partita NON coinvolge l'utente e NON è stata ancora giocata
+        if (casaUpper !== mioUpper && fuoriUpper !== mioUpper && !p.giocata) {
+            
+            // Generiamo dei gol realistici (da 0 a 3 gol basati sul caso)
+            let golCasaCPU = Math.floor(Math.random() * 4);
+            let golFuoriCPU = Math.floor(Math.random() * 4);
+
+            // Salviamo i risultati nel calendario
+            p.golCasa = golCasaCPU;
+            p.golFuori = golFuoriCPU;
+            p.giocata = true;
+
+            // Aggiorniamo i dati delle squadre CPU nella classifica globale
+            if (classifica[p.casa] && classifica[p.fuori]) {
+                classifica[p.casa].giocate += 1;
+                classifica[p.fuori].giocate += 1;
+                classifica[p.casa].golFatti += golCasaCPU;
+                classifica[p.casa].golSubiti += golFuoriCPU;
+                classifica[p.fuori].golFatti += golFuoriCPU;
+                classifica[p.fuori].golSubiti += golCasaCPU;
+
+                if (golCasaCPU > golFuoriCPU) {
+                    classifica[p.casa].punti += 3;
+                } else if (golFuoriCPU > golCasaCPU) {
+                    classifica[p.fuori].punti += 3;
+                } else {
+                    classifica[p.casa].punti += 1;
+                    classifica[p.fuori].punti += 1;
+                }
+            }
+            console.log(`[CPU SIMULATA] ${p.casa} ${golCasaCPU} - ${golFuoriCPU} ${p.fuori}`);
+        }
+    });
+}

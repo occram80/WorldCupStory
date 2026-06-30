@@ -129,13 +129,27 @@ function renderizzaGiocatoriInPartita() {
             return 0; // Se stesso reparto, mantiene l'ordine cronologico di scelta
         });
 
-        // 2. STAMPA DEI TITOLARI ORDINATI SECONDO IL MODULO
+        // 2. STAMPA DEI TITOLARI ORDINATI (CON ENERGIA REALE / RESISTENZA DI PARTENZA)
         titolariReali.forEach((giocatore) => {
+            // 🔥 Se energiaAttuale non esiste o non è ancora impostata, usa la resistenza nativa (es. 88, 92, ecc.)
+            if (typeof giocatore.energiaAttuale === 'undefined' || giocatore.energiaAttuale === null) {
+                giocatore.energiaAttuale = giocatore.res || 100;
+            }
+            
+            let energiaNum = Math.round(giocatore.energiaAttuale);
+            
+            // Calcola il modificatore dinamico tattico (+3, +2, -1...) basato sull'energia corrente
+            let testoModificatore = "";
+            if (typeof calcolaModificatoreEnergia === 'function') {
+                let mod = calcolaModificatoreEnergia(energiaNum);
+                testoModificatore = mod >= 0 ? `(+${mod})` : `(${mod})`;
+            }
+
             let htmlGiocatore = `
                 <div style="display: flex; justify-content: space-between; align-items: center; background: #111125; padding: 8px 10px; border-radius: 5px; font-size: 0.85rem; border: 1px solid #1f1f3d; box-shadow: inset 0 0 5px rgba(0,0,0,0.5);">
                     <span style="color: #00f2ff; font-weight: bold; font-family: monospace; width: 35px;">${giocatore.ruoloDinamico}</span>
                     <span style="flex: 1; color: white; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 5px;">${giocatore.nome}</span>
-                    <span style="color: #ffcc00; font-weight: bold; font-family: monospace; font-size: 0.8rem; background: #000; padding: 2px 6px; border-radius: 3px;">⚡100</span>
+                    <span style="color: #ffcc00; font-weight: bold; font-family: monospace; font-size: 0.8rem; background: #000; padding: 2px 6px; border-radius: 3px;">⚡${energiaNum} <span style="font-size: 0.7rem; color: #aaa; margin-left: 2px;">${testoModificatore}</span></span>
                 </div>
             `;
             boxTitolari.innerHTML += htmlGiocatore;
@@ -144,11 +158,17 @@ function renderizzaGiocatoriInPartita() {
         // 3. STAMPA DELLA PANCHINA ORDINATA PER REPARTO
         panchinaReale.forEach((giocatore) => {
             let ruoloNativo = Array.isArray(giocatore.ruolo) ? giocatore.ruolo[0] : giocatore.ruolo;
+            
+            if (typeof giocatore.energiaAttuale === 'undefined' || giocatore.energiaAttuale === null) {
+                giocatore.energiaAttuale = giocatore.res || 100;
+            }
+            let energiaNum = Math.round(giocatore.energiaAttuale);
+
             let htmlGiocatore = `
                 <div style="display: flex; justify-content: space-between; align-items: center; background: #111125; padding: 8px 10px; border-radius: 5px; font-size: 0.85rem; border: 1px solid #1f1f3d; box-shadow: inset 0 0 5px rgba(0,0,0,0.5);">
                     <span style="color: #aaa; font-weight: bold; font-family: monospace; width: 35px;">${ruoloNativo}</span>
                     <span style="flex: 1; color: #aaa; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 5px;">${giocatore.nome}</span>
-                    <span style="color: #ffcc00; font-weight: bold; font-family: monospace; font-size: 0.8rem; background: #000; padding: 2px 6px; border-radius: 3px;">⚡100</span>
+                    <span style="color: #ffcc00; font-weight: bold; font-family: monospace; font-size: 0.8rem; background: #000; padding: 2px 6px; border-radius: 3px;">⚡${energiaNum}</span>
                 </div>
             `;
             boxPanchina.innerHTML += htmlGiocatore;
@@ -176,10 +196,16 @@ function startCronometroPartita() {
     const boxCronaca = document.getElementById('live-box-cronaca');
     boxCronaca.innerHTML = `<div style="color: #00f2ff; font-weight: bold;">🏁 L'arbitro controlla il cronometro... Fischia l'inizio! SI PARTE!</div>`;
 
+    // --- AGGIUNTA: RESET GRAFICO DEI MARCATORI ---
+    // Svuota la lista dei gol della partita precedente all'avvio del nuovo match
+    document.getElementById('live-marcatori-casa').innerHTML = "";
+    document.getElementById('live-marcatori-fuori').innerHTML = "";
+
     // Fai partire il ciclo temporizzato (1.3 secondi reali = 1 minuto di gioco)
     clearInterval(timerPartitaId);
     timerPartitaId = setInterval(cicloMinutoPartita, 1300);
 }
+
 // ==========================================
 // 3. IL TIMER: COSA SUCCEDE OGNI 1.3 SECONDI (AGGIORNATO CON ENGINE REALE)
 // ==========================================
@@ -188,18 +214,38 @@ function cicloMinutoPartita() {
 
     minutoAttuale++;
 
-    // 🔋 CALO ENERGIA DEI GIOCATORI IN CAMPO (Ogni minuto cala di 0.7)
+    // 🔋 FUNZIONE INTERNA: Calcola il consumo in base al ruolo dinamico sul campo
+    const calcolaConsumoRuolo = (ruolo) => {
+        switch (ruolo) {
+            case "POR": return 0.1;  // Il portiere non si stanca quasi mai
+            case "DIF":
+            case "TER": return 0.55; // Difesa di posizione
+            case "ALA":
+            case "ATT": return 0.7;  // Scatti e fiammate offensive
+            case "CEN":
+            case "MED":
+            case "EST":
+            case "COC": return 0.85; // I motori del centrocampo (consumo massimo)
+            default: return 0.7;     // Fallback standard
+        }
+    };
+
+    // 🔋 CALO ENERGIA DEI GIOCATORI IN CAMPO (UTENTE)
     if (typeof rosaGiocatoreOggetti !== 'undefined' && rosaGiocatoreOggetti.length > 0) {
         rosaGiocatoreOggetti.forEach(g => {
             if (g.schieramento === "campo" && typeof g.energiaAttuale !== 'undefined') {
-                g.energiaAttuale = Math.max(0, g.energiaAttuale - 0.7);
+                let consumo = calcolaConsumoRuolo(g.ruoloDinamico);
+                g.energiaAttuale = Math.max(0, g.energiaAttuale - consumo);
             }
         });
     }
+    
+    // 🔋 CALO ENERGIA DEI GIOCATORI IN CAMPO (CPU)
     if (typeof giocatoriFuoriLive !== 'undefined' && giocatoriFuoriLive.length > 0) {
         giocatoriFuoriLive.forEach(g => {
             if (g.schieramento === "campo" && typeof g.energiaAttuale !== 'undefined') {
-                g.energiaAttuale = Math.max(0, g.energiaAttuale - 0.7);
+                let consumo = calcolaConsumoRuolo(g.ruoloDinamico);
+                g.energiaAttuale = Math.max(0, g.energiaAttuale - consumo);
             }
         });
     }
@@ -214,7 +260,7 @@ function cicloMinutoPartita() {
     let minutesFinti = Math.floor((minutoAttuale * 1.3) / 60).toString().padStart(2, '0');
     document.getElementById('live-cronometro').innerText = `${minutesFinti}:${secondiFinti} (${minutoAttuale}')`;
 
-    // 🎯 CHIAMATA ALL'ENGINE REALE: Calcola se c'è un'azione in questo minuto
+    // 🎯 CHIAMATA ALL'ENGINE REALE: Calcola si c'è un'azione in questo minuto
     if (typeof eseguiCalcoloMinutoPartita === 'function') {
         let azioneReale = eseguiCalcoloMinutoPartita(minutoAttuale);
         
@@ -225,8 +271,18 @@ function cicloMinutoPartita() {
                 // Aggiorna i gol reali del tabellone usando le tue variabili globali
                 if (azioneReale.squadra === squadraCasaNome) {
                     golCasa++;
+                    
+                    // --- AGGIUNTA: STAMPA MARCATORE CASA ---
+                    const marcatore = azioneReale.marcatore || azioneReale.autore || "Gol";
+                    const divCasa = document.getElementById('live-marcatori-casa');
+                    divCasa.innerHTML += `<div>${marcatore} (${minutoAttuale}')</div>`;
                 } else {
                     golFuori++;
+                    
+                    // --- AGGIUNTA: STAMPA MARCATORE FUORI ---
+                    const marcatore = azioneReale.marcatore || azioneReale.autore || "Gol";
+                    const divFuori = document.getElementById('live-marcatori-fuori');
+                    divFuori.innerHTML += `<div>${marcatore} (${minutoAttuale}')</div>`;
                 }
                 document.getElementById('live-risultato').innerText = `${golCasa} - ${golFuori}`;
                 box.innerHTML += `<div style="color: #ffcc00; font-weight: bold; margin-bottom: 4px;">[${minutoAttuale}'] ${azioneReale.cronaca}</div>`;
@@ -251,6 +307,12 @@ function cicloMinutoPartita() {
         boxCronaca.scrollTop = boxCronaca.scrollHeight; // Auto-scroll in fondo alla telecronaca
         
         alert(`Partita Conclusa! ${squadraCasaNome} ${golCasa} - ${golFuori} ${squadraFuoriNome}`);
+
+        // --- ATTIVAZIONE TASTO REGISTRAZIONE E RIENTRO (AGGIUNTO) ---
+        const boxFine = document.getElementById('box-fine-partita');
+        if (boxFine) {
+            boxFine.style.display = "block";
+        }
     }
 }
 // ==========================================
@@ -299,4 +361,75 @@ function ottieniBonusModuloDifesaUtente() {
     if (numeroDifensori === 3 || numeroDifensori === 4) return 0;
     if (numeroDifensori >= 5) return 1;
     return 0; // Fallback di sicurezza
+}
+
+// ==========================================
+// REGISTRA IL RISULTATO DEL MATCH E TORNA AL GIRONE (AGGIORNATA CON SIMULAZIONE CPU)
+// ==========================================
+function salvaPartitaETornaAlGirone() {
+    const casa = squadraCasaNome;
+    const fuori = squadraFuoriNome;
+
+    // 1. AGGIORNA IL CALENDARIO GLOBAL (Partita Utente)
+    let partitaTrovata = false;
+    for (let g of calendario) {
+        for (let p of g.partite) {
+            if (p.casa === casa && p.fuori === fuori && !p.giocata) {
+                p.golCasa = golCasa;
+                p.golFuori = golFuori;
+                p.giocata = true;
+                partitaTrovata = true;
+                break;
+            }
+        }
+        if (partitaTrovata) break;
+    }
+
+    // 2. AGGIORNA LA CLASSIFICA GLOBAL (Partita Utente)
+    if (classifica[casa] && classifica[fuori]) {
+        classifica[casa].giocate += 1;
+        classifica[fuori].giocate += 1;
+        classifica[casa].golFatti += golCasa;
+        classifica[casa].golSubiti += golFuori;
+        classifica[fuori].golFatti += golFuori;
+        classifica[fuori].golSubiti += golCasa;
+
+        if (golCasa > golFuori) {
+            classifica[casa].punti += 3;
+        } else if (golFuori > golCasa) {
+            classifica[fuori].punti += 3;
+        } else {
+            classifica[casa].punti += 1;
+            classifica[fuori].punti += 1;
+        }
+    }
+
+    // --- AGGIUNTA: SIMULA LE ALTRE MATCH DELLA GIORNATA ---
+    if (typeof simulaPartiteCPU === 'function') {
+        simulaPartiteCPU();
+    }
+
+    // --- AGGIUNTA: AVANZA LA GIORNATA DEL TORNEO ---
+    giornataCorrente += 1; 
+
+    // 4. CAMBIO INTERFACCIA GRAFICA
+    const schermataLive = document.getElementById('schermata-partita-live');
+    const schermataGirone = document.getElementById('schermata-mio-girone');
+    
+    if (schermataLive) schermataLive.style.display = 'none';
+    if (schermataGirone) schermataGirone.style.display = 'block';
+
+    const boxFine = document.getElementById('box-fine-partita');
+    const btnInizio = document.getElementById('btn-inizio-partita');
+    if (boxFine) boxFine.style.display = 'none';
+    if (btnInizio) {
+        btnInizio.style.display = 'inline-block';
+        btnInizio.disabled = false;
+        btnInizio.style.background = "#28a745";
+        btnInizio.innerText = "▶️ INIZIA PARTITA";
+    }
+
+    // 5. REFRESH GRAFICO DEL GIRONE (Ora mostrerà tutto aggiornato!)
+    renderizzaClassifica();
+    renderizzaCalendario();
 }
