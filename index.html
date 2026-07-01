@@ -152,7 +152,7 @@ button.selezionato {
             
             <div style="text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #333; font-family: monospace; font-size: 0.8rem; color: #555;">
                 <span>By <strong style="color: #00f2ff;">OCCRAM80</strong></span> 
-                <span style="margin-left: 10px; background: #222; padding: 2px 6px; border-radius: 3px; color: #ffcc00; border: 1px solid #333;">v0.3</span>
+                <span style="margin-left: 10px; background: #222; padding: 2px 6px; border-radius: 3px; color: #ffcc00; border: 1px solid #333;">v0.4</span>
             </div>
         </div>
     </div>
@@ -260,6 +260,10 @@ button.selezionato {
             <div style="text-align: center; width: 30%; display: flex; flex-direction: column; align-items: center;">
                 <div id="live-cronometro" style="font-size: 1.1rem; color: #00f2ff; font-family: monospace; letter-spacing: 2px; font-weight: bold; margin-bottom: 5px;">00:00 (1')</div>
                 <div id="live-risultato" style="font-size: 2.5rem; font-weight: bold; background: #000; padding: 5px 20px; border-radius: 5px; border: 1px solid #333; letter-spacing: 5px; margin-bottom: 10px;">0 - 0</div>
+                
+                <div id="live-cambi-rimasti" style="font-size: 0.8rem; color: #00f2ff; font-family: monospace; font-weight: bold; margin-bottom: 6px;">🔄 Cambi rimasti: 5 / 5</div>
+                <button id="btn-pausa-tattica" onclick="gestisciPausaTattica()" style="background: #ffc107; color: black; border: none; padding: 5px 12px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-bottom: 10px; display: inline-block;">⏸️ PAUSA TATTICA</button>
+                
                 <button id="btn-inizio-partita" onclick="startCronometroPartita()" style="background: #28a745; color: white; border: none; padding: 6px 15px; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); font-size: 0.85rem;">▶️ INIZIA PARTITA</button>
             </div>
             
@@ -298,12 +302,12 @@ button.selezionato {
 
     </div>
 </div>
-
 <script src="squadre.js"></script>
 <script src="engine-partite.js"></script>
 <script src="gestione-gironi.js"></script>
 <script src="interfaccia-partita.js"></script> 
 <script src="draft.js"></script>
+<script src="sostituzioni.js"></script>
 
 <script>
 // 1. CONFIGURAZIONE GLOBALE

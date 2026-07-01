@@ -33,6 +33,18 @@ function preparaMatchLive(nomeCasa, nomeFuori) {
     partitaAttiva = false; // Ferma finché non si clicca su Inizia Partita
     giocatoreDaSostituireIndex = null;
 
+    // 🔄 RESET LOGICO E GRAFICO DELLE SOSTITUZIONI
+    if (typeof resetSostituzioniMatch === 'function') {
+        resetSostituzioniMatch();
+    }
+
+    // Reset grafico del pulsante Pausa Tattica
+    const btnPausa = document.getElementById('btn-pausa-tattica');
+    if (btnPausa) {
+        btnPausa.innerText = "⏸️ PAUSA TATTICA";
+        btnPausa.style.background = "#ffc107";
+    }
+
     // Reset grafico completo del tabellone
     document.getElementById('live-casa-nome').innerText = squadraCasaNome;
     document.getElementById('live-fuori-nome').innerText = squadraFuoriNome;
@@ -68,6 +80,10 @@ function preparaMatchLive(nomeCasa, nomeFuori) {
     // POPOLA TITOLARI E PANCHINA REALI DAL DRAFT
     renderizzaGiocatoriInPartita();
 }
+
+// ==========================================
+// NUOVA FUNZIONE: DISEGNA LA ROSA SEGUENDO L'ORDINE VISIVO DEL MODULO E REPARTO PANCHINA (CON GESTIONE CLICK CAMBI)
+// ==========================================
 // ==========================================
 // NUOVA FUNZIONE: DISEGNA LA ROSA SEGUENDO L'ORDINE VISIVO DEL MODULO E REPARTO PANCHINA
 // ==========================================
@@ -89,9 +105,9 @@ function renderizzaGiocatoriInPartita() {
 
     if (mieiGiocatori && mieiGiocatori.length > 0) {
         
-        // 1. SEPARAZIONE TRA CAMPO E PANCHINA
-        let titolariReali = mieiGiocatori.filter(g => g.schieramento === "campo");
-        let panchinaReale = mieiGiocatori.filter(g => g.schieramento === "panchina");
+        // 1. SEPARAZIONE TRA CAMPO E PANCHINA (Mantenendo traccia dell'indice originale nell'array globale)
+        let titolariReali = mieiGiocatori.map((g, idx) => ({...g, indexOriginale: idx})).filter(g => g.schieramento === "campo");
+        let panchinaReale = mieiGiocatori.map((g, idx) => ({...g, indexOriginale: idx})).filter(g => g.schieramento === "panchina");
 
         // 🔥 RECUPERA L'ORDINE DEGLI SLOT DAL CAMPO DA GIOCO REALE
         const nodiSlotCampo = Array.from(document.querySelectorAll('.omino-giocatore'));
@@ -131,22 +147,36 @@ function renderizzaGiocatoriInPartita() {
 
         // 2. STAMPA DEI TITOLARI ORDINATI (CON ENERGIA REALE / RESISTENZA DI PARTENZA)
         titolariReali.forEach((giocatore) => {
-            // 🔥 Se energiaAttuale non esiste o non è ancora impostata, usa la resistenza nativa (es. 88, 92, ecc.)
             if (typeof giocatore.energiaAttuale === 'undefined' || giocatore.energiaAttuale === null) {
                 giocatore.energiaAttuale = giocatore.res || 100;
+                mieiGiocatori[giocatore.indexOriginale].energiaAttuale = giocatore.energiaAttuale;
             }
             
             let energiaNum = Math.round(giocatore.energiaAttuale);
             
-            // Calcola il modificatore dinamico tattico (+3, +2, -1...) basato sull'energia corrente
             let testoModificatore = "";
             if (typeof calcolaModificatoreEnergia === 'function') {
                 let mod = calcolaModificatoreEnergia(energiaNum);
                 testoModificatore = mod >= 0 ? `(+${mod})` : `(${mod})`;
             }
 
+            // Gestione evidenziazione visiva se questo titolare è stato selezionato per uscire
+            let stileBordo = "border: 1px solid #1f1f3d;";
+            let cursoreClick = "";
+            let azioneClick = "";
+
+            // --- CORREZIONE: Sbloccato il click rimuovendo "minutoAttuale > 1" ---
+            if (!partitaAttiva && minutoAttuale < 90) {
+                cursoreClick = "cursor: pointer;";
+                azioneClick = `onclick="selezionaGiocatoreSostituzione(${giocatore.indexOriginale}, 'campo')"`;
+                
+                if (giocatoreSelezionatoDaSostituireIndex === giocatore.indexOriginale) {
+                    stileBordo = "border: 2px solid #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);";
+                }
+            }
+
             let htmlGiocatore = `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: #111125; padding: 8px 10px; border-radius: 5px; font-size: 0.85rem; border: 1px solid #1f1f3d; box-shadow: inset 0 0 5px rgba(0,0,0,0.5);">
+                <div ${azioneClick} style="display: flex; justify-content: space-between; align-items: center; background: #111125; padding: 8px 10px; border-radius: 5px; font-size: 0.85rem; ${stileBordo} ${cursoreClick} box-shadow: inset 0 0 5px rgba(0,0,0,0.5); transition: all 0.2s;">
                     <span style="color: #00f2ff; font-weight: bold; font-family: monospace; width: 35px;">${giocatore.ruoloDinamico}</span>
                     <span style="flex: 1; color: white; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 5px;">${giocatore.nome}</span>
                     <span style="color: #ffcc00; font-weight: bold; font-family: monospace; font-size: 0.8rem; background: #000; padding: 2px 6px; border-radius: 3px;">⚡${energiaNum} <span style="font-size: 0.7rem; color: #aaa; margin-left: 2px;">${testoModificatore}</span></span>
@@ -161,11 +191,28 @@ function renderizzaGiocatoriInPartita() {
             
             if (typeof giocatore.energiaAttuale === 'undefined' || giocatore.energiaAttuale === null) {
                 giocatore.energiaAttuale = giocatore.res || 100;
+                mieiGiocatori[giocatore.indexOriginale].energiaAttuale = giocatore.energiaAttuale;
             }
             let energiaNum = Math.round(giocatore.energiaAttuale);
 
+            // Gestione click e comportamento visivo della panchina
+            let stileBordo = "border: 1px solid #1f1f3d;";
+            let cursoreClick = "";
+            let acciónClick = "";
+
+            // --- CORREZIONE: Sbloccato il click rimuovendo "minutoAttuale > 1" ---
+            if (!partitaAttiva && minutoAttuale < 90) {
+                cursoreClick = "cursor: pointer;";
+                acciónClick = `onclick="selezionaGiocatoreSostituzione(${giocatore.indexOriginale}, 'panchina')"`;
+                
+                // Se c'è già un titolare selezionato, illumina leggermente la panchina per invitare al click
+                if (giocatoreSelezionatoDaSostituireIndex !== null) {
+                    stileBordo = "border: 1px solid #00ff66;";
+                }
+            }
+
             let htmlGiocatore = `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: #111125; padding: 8px 10px; border-radius: 5px; font-size: 0.85rem; border: 1px solid #1f1f3d; box-shadow: inset 0 0 5px rgba(0,0,0,0.5);">
+                <div ${acciónClick} style="display: flex; justify-content: space-between; align-items: center; background: #111125; padding: 8px 10px; border-radius: 5px; font-size: 0.85rem; ${stileBordo} ${cursoreClick} box-shadow: inset 0 0 5px rgba(0,0,0,0.5); transition: all 0.2s;">
                     <span style="color: #aaa; font-weight: bold; font-family: monospace; width: 35px;">${ruoloNativo}</span>
                     <span style="flex: 1; color: #aaa; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 5px;">${giocatore.nome}</span>
                     <span style="color: #ffcc00; font-weight: bold; font-family: monospace; font-size: 0.8rem; background: #000; padding: 2px 6px; border-radius: 3px;">⚡${energiaNum}</span>
@@ -179,7 +226,6 @@ function renderizzaGiocatoriInPartita() {
         boxPanchina.innerHTML = `<div style="color:#555; text-align:center; font-style:italic; font-size:0.85rem; padding-top:10px;">Panchina vuota</div>`;
     }
 }
-
 // ==========================================
 // 2. FASE MATCH LIVE: IL GIOCATORE CLICCA PLAY
 // ==========================================
@@ -272,17 +318,17 @@ function cicloMinutoPartita() {
                 if (azioneReale.squadra === squadraCasaNome) {
                     golCasa++;
                     
-                    // --- AGGIUNTA: STAMPA MARCATORE CASA ---
-                    const marcatore = azioneReale.marcatore || azioneReale.autore || "Gol";
+                    // --- CONTROLLO E AGGIUNTA: STAMPA MARCATORE CASA ---
+                    const marcatore = azioneReale.marcatore || "Gol";
                     const divCasa = document.getElementById('live-marcatori-casa');
-                    divCasa.innerHTML += `<div>${marcatore} (${minutoAttuale}')</div>`;
+                    divCasa.innerHTML += `<div>⚽ ${marcatore} (${minutoAttuale}')</div>`;
                 } else {
                     golFuori++;
                     
-                    // --- AGGIUNTA: STAMPA MARCATORE FUORI ---
-                    const marcatore = azioneReale.marcatore || azioneReale.autore || "Gol";
+                    // --- CONTROLLO E AGGIUNTA: STAMPA MARCATORE FUORI ---
+                    const marcatore = azioneReale.marcatore || "Gol";
                     const divFuori = document.getElementById('live-marcatori-fuori');
-                    divFuori.innerHTML += `<div>${marcatore} (${minutoAttuale}')</div>`;
+                    divFuori.innerHTML += `<div>⚽ ${marcatore} (${minutoAttuale}')</div>`;
                 }
                 document.getElementById('live-risultato').innerText = `${golCasa} - ${golFuori}`;
                 box.innerHTML += `<div style="color: #ffcc00; font-weight: bold; margin-bottom: 4px;">[${minutoAttuale}'] ${azioneReale.cronaca}</div>`;
@@ -315,6 +361,7 @@ function cicloMinutoPartita() {
         }
     }
 }
+
 // ==========================================
 // CALCOLO MODIFICATORE ENERGIA (BONUS/MALUS TATTICO)
 // ==========================================
@@ -364,7 +411,7 @@ function ottieniBonusModuloDifesaUtente() {
 }
 
 // ==========================================
-// REGISTRA IL RISULTATO DEL MATCH E TORNA AL GIRONE (AGGIORNATA CON SIMULAZIONE CPU)
+// REGISTRA IL RISULTATO DEL MATCH E TORNA AL GIRONE (AGGIORNATA CON REFRESH ENERGIA)
 // ==========================================
 function salvaPartitaETornaAlGirone() {
     const casa = squadraCasaNome;
@@ -407,6 +454,19 @@ function salvaPartitaETornaAlGirone() {
     // --- AGGIUNTA: SIMULA LE ALTRE MATCH DELLA GIORNATA ---
     if (typeof simulaPartiteCPU === 'function') {
         simulaPartiteCPU();
+    }
+
+    // --- AGGIUNTA: GESTIONE RECUPERO ENERGIA FINE GIORNATA ---
+    if (typeof rosaGiocatoreOggetti !== 'undefined' && rosaGiocatoreOggetti.length > 0) {
+        rosaGiocatoreOggetti.forEach(g => {
+            if (g.schieramento === "campo") {
+                // Chi ha giocato recupera un po' di forze (+40) ma si porta dietro la stanchezza
+                g.energiaAttuale = Math.min(100, (g.energiaAttuale || 0) + 40);
+            } else {
+                // Chi è rimasto a riposare in panchina torna al massimo della forma
+                g.energiaAttuale = 100;
+            }
+        });
     }
 
     // --- AGGIUNTA: AVANZA LA GIORNATA DEL TORNEO ---

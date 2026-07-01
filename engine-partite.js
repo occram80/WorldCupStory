@@ -155,7 +155,7 @@ function calcolaForzaDifesa(rosaSquadra, bonusModulo) {
     return sommaDifesa + (bonusModulo * 10);
 }
 // ==========================================
-// ENGINE PROVA BASE: CALCOLO AZIONE E GOL (RADDRIZZATO CASA/TRASFERTA)
+// ENGINE PROVA BASE: CALCOLO AZIONE E GOL (STRUTTURATO PER MARCATORI E RUOLI)
 // ==========================================
 function eseguiCalcoloMinutoPartita(minuto) {
     // 1. PROBABILITÀ BASE: C'è un'azione pericolosa in questo minuto? (12% di chance)
@@ -197,14 +197,15 @@ function eseguiCalcoloMinutoPartita(minuto) {
     // 3. SELEZIONE PESATA DEI PROTAGONISTI (LOGICA LOTTERIA)
     // ==========================================
     
-    // Assegna i biglietti per la probabilità di tirare in porta
+    // Assegna i biglietti per la probabilità di tirare in porta (AGGIORNATO COC)
     const ottieniPesoAttacco = (ruolo) => {
         switch (ruolo) {
             case "ATT":
             case "ALA": return 70;  // Tirano spessissimo
+            case "COC": return 50;  // Il trequartista si inserisce molto più spesso di un CC!
             case "CEN":
-            case "EST":
-            case "COC": return 25;  // Si inseriscono ogni tanto
+            case "EST": return 25;  // Si inseriscono ogni tanto
+            case "MED": return 10;  // Il mediano tira raramente da fuori
             case "DIF":
             case "TER": return 5;   // Solo sui calci piazzati
             case "POR": return 0;   // Il portiere non va mai a tirare
@@ -212,18 +213,18 @@ function eseguiCalcoloMinutoPartita(minuto) {
         }
     };
 
-    // Assegna i biglietti per la probabilità di contrastare l'azione
+    // Assegna i biglietti per la probabilità di contrastare l'azione (AGGIORNATO MED)
     const ottieniPesoDifesa = (ruolo) => {
         switch (ruolo) {
             case "DIF":
             case "TER": return 65;  // Fanno il muro difensivo
-            case "MED":
+            case "MED": return 50;  // Il mediano fa un filtro d'acciaio a centrocampo!
             case "CEN": return 30;  // Aiutano in mezzo al campo
             case "ALA":
             case "ATT":
             case "COC":
             case "EST": return 5;   // Ripiegano raramente
-            case "POR": return 0;   // Il portiere gestisce il tiro dopo, non contrasta l'azione
+            case "POR": return 0;   // Il portiere gestisce il tiro dopo
             default: return 10;
         }
     };
@@ -267,11 +268,13 @@ function eseguiCalcoloMinutoPartita(minuto) {
         min: minuto,
         squadra: squadraInAttacco, 
         cronaca: "",
-        isGol: false
+        isGol: false,
+        marcatore: "" // <--- AGGIUNTO: Proprietà vuota pronta da valorizzare
     };
 
     if (totaleAttacco > totaleDifesa) {
         esitoAzione.isGol = true;
+        esitoAzione.marcatore = tiratore.nome; // <--- AGGIUNTO: Salviamo il nome pulito del bomber!
         esitoAzione.cronaca = `⚽ GOL! Grande spunto di ${tiratore.nome} che supera ${difensore.nome} e scarica un tiro potente che si insacca per il ${squadraInAttacco.toUpperCase()}!`;
     } else {
         esitoAzione.isGol = false;
